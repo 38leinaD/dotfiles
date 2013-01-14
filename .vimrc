@@ -26,6 +26,8 @@ set noerrorbells         " don't beep
 
 set nobackup
 set noswapfile
+syntax enable
+set background=dark
 
 set go-=T	"No menubar
 
@@ -34,10 +36,12 @@ filetype plugin on
 filetype indent on
 
 if has("gui_running")
-	set nu
+	colorscheme ir_black
+else
+	colorscheme ir_black
 endif
 
-colorscheme ir_black
+set nu
 
 " change the mapleader from \ to ,
 let mapleader=","
@@ -52,3 +56,15 @@ map <F2> :NERDTreeToggle<CR>
 "Tab switching with <F3> & <F4>
 map <F3> :tabp<CR>
 map <F4> :tabn<CR>
+
+"nnoremap <up> <nop>
+"nnoremap <down> <nop>
+"nnoremap <left> <nop>
+"nnoremap <right> <nop>
+"inoremap <up> <nop>
+"inoremap <down> <nop>
+"inoremap <left> <nop>
+"inoremap <right> <nop>
+nnoremap j gj
+nnoremap k gk
+
