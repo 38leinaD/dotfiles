@@ -152,6 +152,10 @@ set background=dark " or light
 "colorscheme solarized
 colorscheme ir_black
 
+" Use Silversearcher with Ack.VIM
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
 
 " Numbers
 set number
