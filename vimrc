@@ -42,8 +42,8 @@ set ttimeoutlen=20
 set notimeout
 
 " highlight vertical column of cursor
-au WinLeave * set nocursorline nocursorcolumn
-au WinEnter * set cursorline
+"au WinLeave * set nocursorline nocursorcolumn
+"au WinEnter * set cursorline
 set cursorline
 
 "key to insert mode with paste using F2 key
@@ -158,6 +158,7 @@ if executable('ag')
 endif
 
 " Numbers
+set relativenumber
 set number
 set numberwidth=5
 
