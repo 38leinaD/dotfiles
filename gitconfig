@@ -1,0 +1,25 @@
+[user]
+	name = Daniel Platz
+	email = daniel.platz@me.com
+[core]
+	autocrlf = false
+	editor = vim
+[credential]
+    helper = store
+[push]
+	default = simple
+[http]
+[diff]
+	tool = meld
+[rerere]
+	enabled = true
+[alias]
+  s = status -sb
+  l = log --oneline --decorate --graph
+  ls = log --oneline --decorate
+  la = log --oneline --decorate --all --graph
+  co = "!f() { git checkout $@; }; f"
+  dd = "!f() { git difftool --dir-diff $@; }; f"
+  ci = commit --interactive
+[difftool]
+	prompt = false
