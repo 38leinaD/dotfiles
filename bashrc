@@ -1,4 +1,4 @@
-session() { tmux attach -t $1 || tmux new -s $1; }
+ss() { tmux attach -t $1 || tmux new -s $1; }
 
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
@@ -33,9 +33,9 @@ alias ll='ls -l'                              # long list
 alias la='ls -lA'                              # all but . and ..
 alias lsd='ls -d */'                  # list subdirs only
 
-alias grep='grep --color'                     # show differences in colour
-alias egrep='egrep --color=auto'              # show differences in colour
-alias fgrep='fgrep --color=auto'              # show differences in colour
+alias gg='grep --color'                     # show differences in colour
+alias ee='egrep --color=auto'              # show differences in colour
+alias ff='fgrep --color=auto'              # show differences in colour
 
 # Dev
 alias mvndeps='mvn dependency:resolve'
