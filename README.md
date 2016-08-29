@@ -32,7 +32,7 @@ Plugins are listed in `vimrc.bundles`.
 To install them you'll need vundle. Installation directions are here: https://github.com/gmarik/Vundle.vim.
 Once vundle is installed. Open vim (`$ vim`) and type `:PluginInstall`. And then restart vim. You'll need to do this for all the plugins to work.
 
-# Installing Tmux Plugins
+### Installing Tmux Plugins
 
 Plugins are listed in `tmux.conf`.
 
