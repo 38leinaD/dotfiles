@@ -25,12 +25,26 @@ $ env RCRC=$HOME/dotfiles/rcrc rcup
 ```
 RCM creates dotfile symlinks (`.vimrc` -> `/dotfiles/vimrc`) from your home directory to your `/dotfiles/` directory.
 
-### Installing Plugins
+### Installing Vim Plugins
 
 Plugins are listed in `vimrc.bundles`.
 
 To install them you'll need vundle. Installation directions are here: https://github.com/gmarik/Vundle.vim.
 Once vundle is installed. Open vim (`$ vim`) and type `:PluginInstall`. And then restart vim. You'll need to do this for all the plugins to work.
+
+# Installing Tmux Plugins
+
+Plugins are listed in `tmux.conf`.
+
+To install them you will need tpm. Installation directions are here: https://github.com/tmux-plugins/tpm.
+Once tpm is installed, open tmux and press `prefix + I`.
+
+### Installing Tmux Plugins
+
+Plugins are listed in tmux.conf.
+
+To install them you will need tpm. Installation directions are here:
+https://github.com/tmux-plugins/tpmu
 
 ### Git Config
 Make sure you update ```gitconfig``` with your own name and email address. Otherwise you'll be committing as me. :smile_cat:
