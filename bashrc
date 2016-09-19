@@ -38,8 +38,10 @@ alias ee='egrep --color=auto'              # show differences in colour
 alias ff='fgrep --color=auto'              # show differences in colour
 
 # Dev
-alias mvndeps='mvn dependency:resolve'
-alias mvndepstree='mvn dependency:tree'
+alias mvn-deps='mvn dependency:resolve'
+alias mvn-depstree='mvn dependency:tree'
+alias mvn-eff='mvn help:effective-pom'
+
 mvnhelp() { mvn help:describe -Dfull -Dplugin=$1; }
 
 if [ -f ~/.bashrc.local ]; then
