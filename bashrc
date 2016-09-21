@@ -27,6 +27,12 @@ source ~/dotfiles/ext/cd.sh
 # https://lug.fh-swf.de/shell/#bookmarks
 source ~/dotfiles/ext/bookmarks.sh
 
+# https://github.com/git/git/blob/master/contrib/completion/git-completion.bash
+source ~/dotfiles/ext/git_autocomplete.sh
+
+# https://github.com/juven/maven-bash-completion
+source ~/dotfiles/ext/mvn_autocomplete.sh
+
 # Some shortcuts for different directory listings
 alias ls='ls -hF --color=tty'                 # classify files in colour
 alias ll='ls -l'                              # long list
@@ -39,7 +45,8 @@ alias ff='fgrep --color=auto'              # show differences in colour
 
 # Dev
 alias mvn-deps='mvn dependency:resolve'
-alias mvn-depstree='mvn dependency:tree'
+alias mvn-depls='mvn dependency:list'
+alias mvn-depstree='mvn dependency:tree -Dverbose=true'
 alias mvn-eff='mvn help:effective-pom'
 
 mvnhelp() { mvn help:describe -Dfull -Dplugin=$1; }
