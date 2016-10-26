@@ -51,6 +51,8 @@ alias mvn-eff='mvn help:effective-pom'
 
 mvnhelp() { mvn help:describe -Dfull -Dplugin=$1; }
 
+jrun() { javac $1 && java ${1%.*}; }
+
 if [ -f ~/.bashrc.local ]; then
   source ~/.bashrc.local
 fi
