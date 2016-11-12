@@ -35,8 +35,8 @@ source ~/dotfiles/ext/mvn_autocomplete.sh
 
 # Some shortcuts for different directory listings
 alias ls='ls -hF --color=tty'                 # classify files in colour
-alias ll='ls -l'                              # long list
-alias la='ls -lA'                              # all but . and ..
+alias ll='ls -lG'                              # long list
+alias la='ls -lAG'                              # all but . and ..
 alias lsd='ls -d */'                  # list subdirs only
 
 alias gg='grep --color'                     # show differences in colour
@@ -52,6 +52,9 @@ alias mvn-eff='mvn help:effective-pom'
 mvnhelp() { mvn help:describe -Dfull -Dplugin=$1; }
 
 jrun() { javac $1 && java ${1%.*}; }
+
+# docker
+dme() { eval $(docker-machine env $1); }
 
 if [ -f ~/.bashrc.local ]; then
   source ~/.bashrc.local
