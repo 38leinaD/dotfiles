@@ -22,6 +22,9 @@ shopt -s cdspell
 # Make sure resize does not mess up terminal
 shopt -s checkwinsize
 
+# expand aliases
+shopt -s expand_aliases
+
 source ~/dotfiles/ext/cd.sh
 
 # https://lug.fh-swf.de/shell/#bookmarks
@@ -49,7 +52,9 @@ alias mvn-depls='mvn dependency:list'
 alias mvn-depstree='mvn dependency:tree -Dverbose=true'
 alias mvn-eff='mvn help:effective-pom'
 
-mvnhelp() { mvn help:describe -Dfull -Dplugin=$1; }
+bind -x '"\C-l": clear; ll'
+
+mvn-help() { mvn help:describe -Dfull -Dplugin=$1; }
 
 jrun() { javac $1 && java ${1%.*}; }
 
