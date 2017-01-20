@@ -53,6 +53,10 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git ant docker docker-compose extract gradle mvn rsync rust tmux web-search zsh_reload z)
 
+if [ -f ~/.zshrc.local ]; then
+  source ~/.zshrc.local
+fi
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -60,12 +64,8 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR='vim'
 
 # key rebinds
-bindkey -s '\C-l' 'clear && ls -l\n'
+bindkey -s '\C-l' 'clear && ls -lG\n'
 
 # aliases
 alias la='ls -lAhG' # don't print group
 alias ll='ls -lhG'  # don't print group
-
-if [ -f ~/.zshrc.local ]; then
-  source ~/.zshrc.local
-fi
