@@ -64,7 +64,8 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR='vim'
 
 # key rebinds
-bindkey -s '\C-l' 'clear && ls -lG\n'
+bindkey -s '\C-l' 'clear && ls -lhG\n'
+bindkey -s '\C-k' 'clear\n'
 
 # aliases
 alias la='ls -lAhG' # don't print group
