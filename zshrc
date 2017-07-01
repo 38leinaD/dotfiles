@@ -63,6 +63,18 @@ source $ZSH/oh-my-zsh.sh
 
 export EDITOR='vim'
 
+# Standard and additional keybindings:
+#   ctrl + u     : clear line
+#   ctrl + w     : delete word backward
+#   alt  + d     : delete word
+#   ctrl + a     : move to beginning of line
+#   ctrl + e     : move to end of line (e for end)
+#   alt/ctrl + f : move to next word (f for forward)
+#   alt/ctrl + b : move to previous word (b for backward)
+#   ctrl + d     : delete char at current position (d for delete)
+#   ctrl + k     : delete from character to end of line
+#   alt  + .     : cycle through previous args
+
 # key rebinds
 bindkey -s '\C-l' 'clear && ls -lhG\n'
 bindkey -s '\C-k' 'clear\n'
@@ -77,6 +89,9 @@ insert-last-command-output() {
 }
 zle -N insert-last-command-output
 bindkey '^x' insert-last-command-output
+
+# F1
+bindkey -s '\eOP' 'git status --short^M'
 
 # aliases
 alias la='ls -lAhG' # don't print group
