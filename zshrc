@@ -67,6 +67,17 @@ export EDITOR='vim'
 bindkey -s '\C-l' 'clear && ls -lhG\n'
 bindkey -s '\C-k' 'clear\n'
 
+# ctrl-space
+bindkey '^ ' autosuggest-execute
+
+# alt-x : insert last command result
+zmodload -i zsh/parameter
+insert-last-command-output() {
+  LBUFFER+="$(eval $history[$((HISTCMD-1))])"
+}
+zle -N insert-last-command-output
+bindkey '^x' insert-last-command-output
+
 # aliases
 alias la='ls -lAhG' # don't print group
 alias ll='ls -lhG'  # don't print group
