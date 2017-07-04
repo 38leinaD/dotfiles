@@ -51,7 +51,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aws git ant docker docker-compose extract gradle mvn rsync rust tmux web-search zsh_reload z zsh-autosuggestions)
+plugins=(aws git ant docker docker-compose extract gradle mvn rsync rust tmux web-search zsh_reload z zsh-autosuggestions tmuxinator)
 
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
@@ -96,3 +96,4 @@ bindkey -s '\eOP' 'git status --short^M'
 # aliases
 alias la='ls -lAhG' # don't print group
 alias ll='ls -lhG'  # don't print group
+alias mux='tmuxinator'
