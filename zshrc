@@ -77,7 +77,7 @@ export EDITOR='vim'
 
 # key rebinds
 bindkey -s '\C-l' 'clear && ls -lhG\n'
-bindkey -s '\C-k' 'clear\n'
+bindkey -s '\C-o' 'clear\n'
 
 # ctrl-space
 bindkey '^ ' autosuggest-execute
