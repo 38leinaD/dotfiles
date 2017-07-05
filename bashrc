@@ -1,4 +1,6 @@
-ss() { tmux attach -t $1 || tmux new -s $1; }
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
 
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
