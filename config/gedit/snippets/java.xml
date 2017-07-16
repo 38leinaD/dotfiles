@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<snippets language="java">
+  <snippet>
+    <text><![CDATA[public class $1 {
+    $0
+}]]></text>
+    <tag>class</tag>
+    <description>class</description>
+  </snippet>
+</snippets>

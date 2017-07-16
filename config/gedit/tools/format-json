@@ -1,0 +1,15 @@
+#! /usr/bin/env python
+
+# [Gedit Tool]
+# Name=Format JSON
+# Shortcut=<Primary>F7
+# Applicability=all
+# Output=replace-selection
+# Input=selection
+# Save-files=nothing
+
+import json
+import sys
+ 
+j = json.load(sys.stdin)
+print json.dumps(j, sort_keys=True, indent=2)

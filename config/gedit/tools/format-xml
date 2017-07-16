@@ -1,0 +1,23 @@
+#! /usr/bin/env python
+# [Gedit Tool]
+# Name=Format XML
+# Shortcut=<Primary>F6
+# Applicability=all
+# Output=replace-selection
+# Input=selection
+# Save-files=nothing
+
+import sys
+import lxml.etree as etree
+import traceback
+ 
+result = ''
+for line in sys.stdin:
+  result += line
+try:
+  x = etree.fromstring(result)
+  result = etree.tostring(x, pretty_print=True, xml_declaration=True, encoding="UTF-8")
+except:
+  etype, evalue, etraceback = sys.exc_info()
+  traceback.print_exception(etype, evalue, etraceback, file=sys.stderr)
+print result
