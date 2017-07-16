@@ -1,0 +1,20 @@
+{
+	"binary_file_patterns":
+	[
+		".git/*",
+		"target/*",
+		"Workbench/*",
+		"Components/*",
+		"Assembling/*",
+		"Runtime/*",
+		"dropin/*",
+		"lib/*"
+	],
+	"color_scheme": "Packages/Colorsublime-Themes/IR_Black.tmTheme",
+	"highlight_line": true,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"word_wrap": "false"
+}

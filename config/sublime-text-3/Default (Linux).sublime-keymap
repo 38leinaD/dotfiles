@@ -1,0 +1,4 @@
+[
+	{ "keys": ["ctrl+alt+enter"], "command": "java_exec" },
+	{ "keys": ["ctrl+f1"], "command": "comm_trace_format" }
+]
