@@ -77,6 +77,12 @@ gwmd() { git log --oneline -- $1 }
 # Latest commit that has foo in commit-message
 gfcm() { git show :/$1 | cat }
 
+# Reset file hunks interactively
+#git checkout -p <path-to-file>
+
+# Word-diff instead of line-diff
+#git --no-pager diff --word-diff=color
+
 alias g='git'
 
 alias ga='git add'
