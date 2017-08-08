@@ -38,12 +38,44 @@ function work_in_progress() {
 alias gclean='git checkout -- .'
 
 # See outgoing commits
-git log @{upstream}..HEAD
+alias goc=git log @{upstream}..HEAD
+
+# Find a commit that introduced a string in any file (on any branch)
+gfindg() { git log --source --all -S "$@" }
+
+# Find a commit that introduced a string in any file (on HEAD only)
+gfind() { git log -S "$@" }
+
+# See the commit graph across all branches for the last two weeks
+alias glog5=git log --all --since='5 days' --oneline --no-merges --decorate --graph
+# --author=<your email address>
+# --since=00:00:00
 
 #
 # Aliases
 # (sorted alphabetically)
 #
+
+# See additions and deletions on graph
+alias glogd=git log --graph --all --decorate --stat --date=iso
+
+# What changes am I about to pull in? (after fetch)
+gwpi () { git log --oneline --no-merges ..origin/$1 }
+
+# Changelog
+#git log --oneline --no-merges <last tag>..HEAD
+
+# Who made a change to these lines?
+#git blame -L5,10 component.versions
+
+# What commits affected a file
+gwmf() { git log --oneline --stat --follow $1 }
+
+# See what commits affected a folder
+gwmd() { git log --oneline -- $1 }
+
+# Latest commit that has foo in commit-message
+gfcm() { git show :/$1 | cat }
 
 alias g='git'
 
