@@ -9,21 +9,14 @@ My .dotfiles.
 Clone this repo (or your own fork!) to your **home** directory (`/Users/username`).
 ```
 $ cd ~
-$ git clone https://github.com/mscoutermarsh/dotfiles
+$ git clone https://github.com/38leinaD/dotfiles
 ```
 
-Install rcm
-
+Run install.sh (this command expects that you cloned your dotfiles to `~/dotfiles/`)
 ```
-$ brew tap thoughtbot/formulae
-$ brew install rcm
+$ ./install.sh
 ```
-
-Run rcm (this command expects that you cloned your dotfiles to `~/dotfiles/`)
-```
-$ env RCRC=$HOME/dotfiles/rcrc rcup
-```
-RCM creates dotfile symlinks (`.vimrc` -> `/dotfiles/vimrc`) from your home directory to your `/dotfiles/` directory.
+install.sh creates dotfile symlinks (`.vimrc` -> `/dotfiles/vimrc`) from your home directory to your `/dotfiles/` directory.
 
 ### Installing Vim Plugins
 
