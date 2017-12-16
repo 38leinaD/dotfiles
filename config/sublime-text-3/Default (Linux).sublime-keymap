@@ -1,4 +1,8 @@
 [
 	{ "keys": ["ctrl+alt+enter"], "command": "java_exec" },
-	{ "keys": ["ctrl+f1"], "command": "comm_trace_format" }
+	{ "keys": ["ctrl+f1"], "command": "comm_trace_format" },
+	{ 
+    "keys"    : ["f5"], 
+    "command" : "refresh_folder_list" 
+	}
 ]
