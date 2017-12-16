@@ -82,7 +82,7 @@ bindkey -s '\C-o' 'clear\n'
 # ctrl-space
 bindkey '^ ' autosuggest-execute
 
-# alt-x : insert last command result
+# ctrl-x : insert last command result
 zmodload -i zsh/parameter
 insert-last-command-output() {
   LBUFFER+="$(eval $history[$((HISTCMD-1))])"
@@ -90,10 +90,30 @@ insert-last-command-output() {
 zle -N insert-last-command-output
 bindkey '^x' insert-last-command-output
 
+# expand alias: ctrl+X A
+
 # F1
 bindkey -s '\eOP' 'git status --short^M'
 
 # aliases
 alias la='ls -lAhG' # don't print group
 alias ll='ls -lhG'  # don't print group
+alias t='tree -C'
+alias td='tree -dC'
+
+alias gw='./gradlew'
+alias dcu='docker-compose up'
+alias dcd='docker-compose down'
 alias mux='tmuxinator'
+alias wtch='clear; tree -CA; while inotifywait -q -r .; do clear; tree -CA; done;'
+alias bsync='browser-sync start -s -f * --no-notify'
+
+alias jee='mvn archetype:generate -Dfilter=com.airhacks:javaee'
+
+alias etip='curl https://gist.githubusercontent.com/38leinaD/b4e2283d6c1665068e54fce7f6bfd9fc/raw/b64db5b2bdcafa3b1a383837a8faf31ce4e8d756/must-know-eclipse-shortcuts'
+
+# inotifywait -r -m * | while read file; do clear; tree; done
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/home/daniel/.sdkman"
+[[ -s "/home/daniel/.sdkman/bin/sdkman-init.sh" ]] && source "/home/daniel/.sdkman/bin/sdkman-init.sh"
