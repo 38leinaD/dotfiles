@@ -99,6 +99,8 @@ source ~/dotfiles/shell/.aliases
 source ~/dotfiles/shell/.functions
 source ~/dotfiles/shell/.external
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/daniel/.sdkman"
 [[ -s "/home/daniel/.sdkman/bin/sdkman-init.sh" ]] && source "/home/daniel/.sdkman/bin/sdkman-init.sh"
