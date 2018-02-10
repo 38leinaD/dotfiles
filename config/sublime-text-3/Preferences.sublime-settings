@@ -22,7 +22,7 @@
 		"Vintage"
 	],
 	"remember_open_files": false,
-	"remove_trailing_whitespace_on_save": true,
+	"remove_trailing_whitespace_on_save": false,
 	"rulers":
 	[
 		80,
