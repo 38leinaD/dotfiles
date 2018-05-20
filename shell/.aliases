@@ -5,6 +5,7 @@ alias ll='ls -lhG'  # don't print group
 alias t='tree -C'
 alias td='tree -dC'
 
+alias edit=subl
 alias gw='./gradlew'
 alias dcu='docker-compose up'
 alias dcd='docker-compose down'
