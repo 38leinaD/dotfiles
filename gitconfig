@@ -29,3 +29,5 @@
 
 [icdiff]
 	options = --highlight --line-numbers
+[pull]
+	rebase = true
