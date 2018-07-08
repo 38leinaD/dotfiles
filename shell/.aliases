@@ -12,10 +12,10 @@ alias dcd='docker-compose down'
 alias mux='tmuxinator'
 alias wtch='clear; tree -CA; while inotifywait -q -r .; do clear; tree -CA; done;'
 alias wtchls='clear; tree -CA; while inotifywait -q -r .; do clear; ls -l; done;'
-alias c='pygmentize -O style=rrt -f console256 -g'
+alias syntax='pygmentize -O style=rrt -f console256 -g'
 
 alias bsync='browser-sync start -s -f * --no-notify'
 
-alias jee='mvn archetype:generate -Dfilter=com.airhacks:javaee'
+alias jeea='mvn archetype:generate -Dfilter=de.dplatz:'
 
 # inotifywait -r -m * | while read file; do clear; tree; done
