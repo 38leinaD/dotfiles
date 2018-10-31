@@ -1,1 +1,19 @@
 #!/usr/bin/env bash
+
+jep330() {
+
+	class=$1
+	file=$(echo "$class" | tr '[:upper:]' '[:lower:]')
+
+	cat << EOF > $file
+#!java --source 11
+
+public class ${class} {
+	public static void main (String[] args) {
+		System.out.println("Hello " + args[0] + "!");
+	}
+}
+EOF
+
+	chmod u+x $file
+}
