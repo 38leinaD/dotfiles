@@ -1,1 +1,47 @@
 #!/usr/bin/env bash
+
+watchCompileJava() {
+	clear;while inotifywait -qq $1; do clear; javac $1; java ${1%.*}; sleep 1; done
+}
+
+createJavaClass() {
+
+	class=${1%.java}
+	file=${1}
+
+	cat << EOF > $file
+import java.io.*;
+import java.util.*;
+
+public class ${class} {
+	public static void main (String[] args) {
+		System.out.println("Hello World!");
+	}
+}
+EOF
+
+	chmod u+x $file
+	echo "File $file created."
+}
+
+createJavaCmd() {
+
+	class=$1
+	file=$(echo "$class" | tr '[:upper:]' '[:lower:]')
+
+	cat << EOF > $file
+#!java --source 11
+
+import java.io.*;
+import java.util.*;
+
+public class ${class} {
+	public static void main (String[] args) {
+		System.out.println("Hello World!");
+	}
+}
+EOF
+
+	chmod u+x $file
+	echo "File $file created."
+}
