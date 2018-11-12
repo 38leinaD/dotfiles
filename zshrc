@@ -102,6 +102,8 @@ source ~/dotfiles/shell/.external
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+bindkey -s '\C-z' 'ag -l -g "" | fzf | xargs subl\n'
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/daniel/.sdkman"
 [[ -s "/home/daniel/.sdkman/bin/sdkman-init.sh" ]] && source "/home/daniel/.sdkman/bin/sdkman-init.sh"
