@@ -1,10 +1,35 @@
 #!/usr/bin/env bash
 
-watchCompileJava() {
+war() {
+	wad_do() {
+		clear;
+		the_time=$(date +%H:%M:%S)
+		start=$(date +%s.%N)
+		# Run the command that was provided as argument
+		eval $@;
+		rc=$?
+		end=$(date +%s.%N)
+		diff=$(echo "${end} - ${start}" | bc)
+		if [ $rc -eq 0 ]; then
+			echo ""
+			echo -e "\e[2m[${the_time}]\e[0m \e[1;32m** Successful **\e[0m \e[2m(time: ${diff} seconds)\e[0m"
+		else
+			echo ""
+			echo -e "\e[2m[${the_time}]\e[0m \e[1;31m** Failed **\e[0m"
+		fi
+		sleep 1;
+	}
+	wad_do $@
+	while inotifywait -qq .; do
+		wad_do $@
+	done
+}
+
+warj() {
 	clear;while inotifywait -qq $1; do clear; javac $1; java ${1%.*}; sleep 1; done
 }
 
-createJavaClass() {
+cjclass() {
 
 	class=${1%.java}
 	file=${1}
@@ -24,7 +49,7 @@ EOF
 	echo "File $file created."
 }
 
-createJavaCmd() {
+cjcmd() {
 
 	class=$1
 	file=$(echo "$class" | tr '[:upper:]' '[:lower:]')
