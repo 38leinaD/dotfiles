@@ -104,6 +104,11 @@ source ~/dotfiles/shell/.external
 
 bindkey -s '\C-z' 'ag -l -g "" | fzf | xargs subl\n'
 
+# Fix VSCode Ctrl+Shift+E shortcut (https://github.com/Microsoft/vscode/issues/48480)
+export GTK_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+export QT_IM_MODULE=ibus
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/daniel/.sdkman"
 [[ -s "/home/daniel/.sdkman/bin/sdkman-init.sh" ]] && source "/home/daniel/.sdkman/bin/sdkman-init.sh"
