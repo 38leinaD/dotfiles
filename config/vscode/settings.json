@@ -1,0 +1,41 @@
+{
+    "terminal.integrated.fontSize": 11,
+    "terminal.integrated.fontFamily": "'Monospace'",
+    "editor.wordWrap": "on",
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.fontSize": 11,
+    "debug.console.fontSize": 11,
+    "debug.console.fontFamily": "'Monospace'",
+    "git.autofetch": true,
+    "window.zoomLevel": 0,
+    "java.errors.incompleteClasspath.severity": "ignore",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "gitlens.advanced.messages": {
+        "suppressShowKeyBindingsNotice": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/.git": true,
+        "**/bower_components": true,
+        "build/**": true,
+        "target/**": true
+    },
+    "workbench.startupEditor": "newUntitledFile",
+    "editor.formatOnSave": true,
+    // https://github.com/redhat-developer/vscode-java/wiki/Formatter-settings
+    "java.format.settings.url": "https://raw.githubusercontent.com/38leinaD/dotfiles/master/config/eclipse/eclipse-formatter.xml",
+    //"java.trace.server": "verbose",
+    "breadcrumbs.enabled": true,
+    "editor.fontFamily": "'Monospace'",
+    "workbench.colorTheme": "NetBeans Light Theme",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "workbench.colorCustomizations": {
+        //"terminal.foreground": "#ffffff",
+        //"terminal.background": "#383737"
+    }
+}
