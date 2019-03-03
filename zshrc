@@ -112,3 +112,4 @@ export QT_IM_MODULE=ibus
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/daniel/.sdkman"
 [[ -s "/home/daniel/.sdkman/bin/sdkman-init.sh" ]] && source "/home/daniel/.sdkman/bin/sdkman-init.sh"
+unset GRADLE_HOME
