@@ -62,7 +62,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export EDITOR='vim'
+export EDITOR='subl'
 
 # Standard and additional keybindings:
 #   ctrl + u     : clear line
