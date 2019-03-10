@@ -8,6 +8,7 @@
     "debug.console.fontFamily": "'Monospace'",
     "git.autofetch": true,
     "window.zoomLevel": 0,
+    "window.titleBarStyle": "custom",
     "java.errors.incompleteClasspath.severity": "ignore",
     "java.configuration.updateBuildConfiguration": "automatic",
     "gitlens.advanced.messages": {
@@ -37,5 +38,11 @@
     "workbench.colorCustomizations": {
         //"terminal.foreground": "#ffffff",
         //"terminal.background": "#383737"
+    },
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        //"source.organizeImports": true,
     }
 }
