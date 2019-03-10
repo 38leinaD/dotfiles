@@ -10,7 +10,7 @@
 		"dropin/*",
 		"lib/*"
 	],
-	"color_scheme": "Packages/Color Scheme - Default/Monokai.sublime-color-scheme",
+	"color_scheme": "Packages/Colorsublime - Themes/Monokai.tmTheme",
 	"default_line_ending": "unix",
 	"detect_indentation": true,
 	"enable_tab_scrolling": false,
