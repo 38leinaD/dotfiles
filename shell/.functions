@@ -20,7 +20,7 @@ war() {
 		sleep 1;
 	}
 	wad_do $@
-	while inotifywait -qq .; do
+	while inotifywait --recursive -qq .; do
 		wad_do $@
 	done
 }
