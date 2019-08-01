@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/sh
 
 ln -s ~/dotfiles/bashrc ~/.bashrc
 ln -s ~/dotfiles/tmux.conf ~/.tmux.conf

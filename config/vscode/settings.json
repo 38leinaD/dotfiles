@@ -28,7 +28,6 @@
     //"java.trace.server": "verbose",
     "breadcrumbs.enabled": true,
     "editor.fontFamily": "'Monospace'",
-    "workbench.colorTheme": "NetBeans Light Theme",
     "files.exclude": {
         "**/.classpath": true,
         "**/.project": true,
@@ -44,5 +43,9 @@
     "editor.codeActionsOnSave": {
         "source.fixAll": true,
         //"source.organizeImports": true,
-    }
+    },
+    "asciidoc.preview.fontSize": 12,
+    "asciidoc.preview.lineHeight": 1.4,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "workbench.colorTheme": "Solarized Light"
 }

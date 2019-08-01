@@ -13,7 +13,8 @@
 	enabled = true
 [merge]
 	tool = bc3
-
+[difftool]
+    prompt = false
 [difftool "icdiff"]
 	prompt = false
 	cmd = icdiff -highlight --line-numbers $LOCAL $REMOTE
@@ -26,8 +27,10 @@
 [alias]
     # Rewrite commit with fixed commiter
     rci = "!f() { ref=$(git rev-parse HEAD); git reset --soft HEAD^; git commit --reset-author -C "$ref"; }; f"
-
 [icdiff]
 	options = --highlight --line-numbers
 [pull]
 	rebase = true
+[difftool "bpmn"]
+    cmd = java -jar /home/daniel/dev/bpmn-diff/bpmn-diff/build/libs/bpmn-diff.jar $LOCAL $REMOTE
+    trustExitCode = false
