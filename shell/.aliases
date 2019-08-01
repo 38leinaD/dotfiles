@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+alias cp='cp' # unalias from oh-my-zshell
 alias la='ls -lAhG' # don't print group
 alias ll='ls -lhG'  # don't print group
 alias t='tree -C'
@@ -13,7 +13,7 @@ alias mux='tmuxinator'
 alias watchtree='clear; tree -CA; while inotifywait -q -r .; do clear; tree -CA; done;'
 alias watchls='clear; tree -CA; while inotifywait -q -r .; do clear; ls -l; done;'
 alias syntax='pygmentize -O style=rrt -f console256 -g'
-alias bsync='browser-sync src -f src --cors --no-notify'
+alias bsync='browser-sync src -f src --cors --no-notify --single'
 alias jeea='mvn archetype:generate -Dfilter=de.dplatz:'
 
 # inotifywait -r -m * | while read file; do clear; tree; done
