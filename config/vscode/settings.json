@@ -12,6 +12,7 @@
     "java.errors.incompleteClasspath.severity": "ignore",
     "java.configuration.updateBuildConfiguration": "automatic",
     "gitlens.advanced.messages": {
+        "suppressGitVersionWarning": true,
         "suppressShowKeyBindingsNotice": true
     },
     "search.exclude": {
@@ -22,12 +23,14 @@
         "target/**": true
     },
     "workbench.startupEditor": "newUntitledFile",
-    "editor.formatOnSave": true,
+    //"editor.formatOnSave": true,
     // https://github.com/redhat-developer/vscode-java/wiki/Formatter-settings
     "java.format.settings.url": "https://raw.githubusercontent.com/38leinaD/dotfiles/master/config/eclipse/eclipse-formatter.xml",
     //"java.trace.server": "verbose",
     "breadcrumbs.enabled": true,
     "editor.fontFamily": "'Monospace'",
+
+    "workbench.colorTheme": "Solarized Light",
     "files.exclude": {
         "**/.classpath": true,
         "**/.project": true,
@@ -44,8 +47,13 @@
         "source.fixAll": true,
         //"source.organizeImports": true,
     },
+
     "asciidoc.preview.fontSize": 12,
     "asciidoc.preview.lineHeight": 1.4,
     "javascript.updateImportsOnFileMove.enabled": "always",
-    "workbench.colorTheme": "Solarized Light"
+    "git.ignoreLegacyWarning": true,
+    "plantuml.server": "http://swtdevlx:8080/plantuml",
+    "asciidoc.preview.attributes": {
+        "plantuml-server-url": "http://swtdevlx:8080/plantuml"
+    }
 }
