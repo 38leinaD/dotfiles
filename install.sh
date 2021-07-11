@@ -49,6 +49,8 @@ ln -s ~/dotfiles/gitconfig ~/.gitconfig
 #	ln -sf "$file" /home/daniel/.config/sublime-text-3/Packages/User/
 #done
 
+git clone https://github.com/robbyrussell/oh-my-zsh ~/.oh-my-zsh
+
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
