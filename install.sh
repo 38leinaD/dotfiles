@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export backup_folder=~/.backup_before_dotfiles_install
+backup_folder=~/.backup_before_dotfiles_install
 mkdir $backup_folder
 
 if [ -f ~/.bashrc ]; then
