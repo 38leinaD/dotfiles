@@ -30,7 +30,7 @@
     "breadcrumbs.enabled": true,
     "editor.fontFamily": "'Monospace'",
 
-    "workbench.colorTheme": "Solarized Light",
+    "workbench.colorTheme": "Monokai Classic",
     "files.exclude": {
         "**/.classpath": true,
         "**/.project": true,
