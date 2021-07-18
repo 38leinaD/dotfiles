@@ -16,4 +16,6 @@ alias syntax='pygmentize -O style=rrt -f console256 -g'
 alias bsync='browser-sync src -f src --cors --no-notify --single'
 alias jeea='mvn archetype:generate -Dfilter=de.dplatz:'
 
+alias open='xdg-open'
+
 # inotifywait -r -m * | while read file; do clear; tree; done
