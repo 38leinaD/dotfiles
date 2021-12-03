@@ -52,7 +52,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ant docker docker-compose extract gradle mvn rsync rust tmux web-search zsh_reload z zsh-autosuggestions tmuxinator common-aliases)
+plugins=(git ant docker docker-compose extract gradle mvn rsync rust tmux web-search z zsh-autosuggestions tmuxinator common-aliases)
 
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
@@ -113,3 +113,6 @@ export QT_IM_MODULE=ibus
 export SDKMAN_DIR="/home/daniel/.sdkman"
 [[ -s "/home/daniel/.sdkman/bin/sdkman-init.sh" ]] && source "/home/daniel/.sdkman/bin/sdkman-init.sh"
 unset GRADLE_HOME
+# Add Jbang to environment
+alias j!=jbang
+export PATH="$HOME/.jbang/bin:$PATH"
