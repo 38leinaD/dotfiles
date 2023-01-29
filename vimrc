@@ -1,4 +1,4 @@
-set shell=/bin/bash
+set shell=/bin/zsh
 runtime macros/matchit.vim
 
 set ttyfast
