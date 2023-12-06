@@ -52,7 +52,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ant docker docker-compose extract gradle mvn rsync rust tmux web-search z zsh-autosuggestions tmuxinator common-aliases)
+plugins=(git ant docker docker-compose extract gradle mvn rsync rust tmux web-search z zsh-autosuggestions tmuxinator common-aliases kubectl)
 
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
@@ -108,6 +108,8 @@ bindkey -s '\C-z' 'ag -l -g "" | fzf | xargs subl\n'
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
+
+export PATH=$(realpath ~/dotfiles/bin):$PATH
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/daniel/.sdkman"
