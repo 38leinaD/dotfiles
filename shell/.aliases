@@ -7,8 +7,11 @@ alias td='tree -dC'
 
 alias edit=subl
 alias gw='./gradlew'
-alias dcu='docker-compose up'
-alias dcd='docker-compose down'
+
+alias dcu='docker compose up'
+alias dcd='docker compose down'
+alias dcdv='docker compose down -v'
+
 alias mux='tmuxinator'
 alias watchtree='clear; tree -CA; while inotifywait -q -r .; do clear; tree -CA; done;'
 alias watchls='clear; tree -CA; while inotifywait -q -r .; do clear; ls -l; done;'
