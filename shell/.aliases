@@ -21,4 +21,6 @@ alias jeea='mvn archetype:generate -Dfilter=de.dplatz:'
 
 alias open='xdg-open'
 
+alias f='find . -name'
+
 # inotifywait -r -m * | while read file; do clear; tree; done

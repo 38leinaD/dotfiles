@@ -37,6 +37,32 @@ tasks.register("getJar") {
         println configurations.runtimeClasspath[0]
     }
 }
+
+tasks.register("getSourceZip") {
+    doLast {
+        def (g,a,v) = "$2".split(':');
+
+        def component =  project
+                .configurations
+                .runtimeClasspath
+                .incoming
+                .resolutionResult
+                .allDependencies
+                .collect { it.selected.id }
+                .find { it.getGroup().equals(g) && it.getModule().equals(a) && it.getVersion().equals(v)}
+
+        project.dependencies.createArtifactResolutionQuery()
+        .forComponents([component])
+        .withArtifacts(JvmLibrary, SourcesArtifact) // JavadocArtifact,SourcesArtifact
+        .execute()
+        .resolvedComponents
+        .forEach {
+            def javadocPath = it.artifactResults.iterator().next().getFile().toString()
+            println javadocPath   
+        }        
+    }
+}
+
 EOF
 
 (cd $tmp_dir && gradle $1 --console=plain --quiet)

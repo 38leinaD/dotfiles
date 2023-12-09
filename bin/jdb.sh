@@ -1,18 +1,23 @@
 #!/bin/bash
 set -e
 
-if [[ "$1" == "" ]]; then
-	echo "Provide the GAV of the Jar to debug. This will decompile it and provide the decompiled sources as input to jdb."
-	echo "usage: $(basename $0) <groupid:artifactid:version>"
+if [ ! $# -eq 2 ]; then
+	echo "Sets up the soources for debuging and runs/connects jdb to a Java process (port 8787)."
+	echo "It can either decompile the jar and provide the decompiled sources as input to jdb or download the source.zip."
+	echo "usage: $(basename $0) decompile|sourceZip <groupid:artifactid:version>"
 	exit 1
+
 fi
 
-WORK_DIR=/home/daniel/junk/test
-rm -rf $WORK_DIR/*
+WORK_DIR=$(mktemp -d)
 
 #WORK_DIR=`mktemp -d`
-echo "Working dir: $WORK_DIR"
+echo "Tmp dir for sources: $WORK_DIR"
 
-java -jar $(gradle-resolve.sh getClasspath org.vineflower:vineflower:1.9.3) -bsm=1 $(gradle-resolve.sh getJar $1) $WORK_DIR
+if [[ "$1" == "decompile" ]]; then
+	java -jar $(gradle-resolve.sh getClasspath org.vineflower:vineflower:1.9.3) -bsm=1 $(gradle-resolve.sh getJar $2) $WORK_DIR
+else
+	unzip -d $WORK_DIR $(gradle-resolve.sh getSourceZip $2)
+fi
 
 jdb -sourcepath $WORK_DIR -attach 8787
