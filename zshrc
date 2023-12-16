@@ -54,10 +54,6 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git ant docker docker-compose extract gradle mvn rsync rust tmux web-search z zsh-autosuggestions tmuxinator common-aliases kubectl)
 
-if [ -f ~/.zshrc.local ]; then
-  source ~/.zshrc.local
-fi
-
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -118,3 +114,8 @@ unset GRADLE_HOME
 # Add Jbang to environment
 alias j!=jbang
 export PATH="$HOME/.jbang/bin:$PATH"
+
+
+if [ -f ~/.zshrc.local ]; then
+  source ~/.zshrc.local
+fi
