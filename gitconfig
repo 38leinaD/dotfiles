@@ -8,6 +8,7 @@
     helper = store
 [push]
 	default = simple
+	autoSetupRemote = true
 [http]
 [rerere]
 	enabled = true
