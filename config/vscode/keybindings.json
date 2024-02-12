@@ -1,15 +1,26 @@
 // Place your key bindings in this file to overwrite the defaults
 [
     {
-        "key": "ctrl+up",
+        "key": "ctrl+shift+up",
         "command": "workbench.action.focusActiveEditorGroup"
     },
     {
-        "key": "ctrl+down",
+        "key": "ctrl+shift+down",
         "command": "workbench.action.terminal.focus"
     },
+    // https://stackoverflow.com/questions/48511956/toggle-between-fullscreen-editor-and-terminal-in-vs-code
     {
         "key": "ctrl+shift+q",
         "command": "workbench.action.toggleMaximizedPanel"
-    }
+    },
+    {
+        "key": "ctrl+shift+t",
+        "command": "workbench.action.closePanel",
+        // "when": "terminalFocus"
+      },
+      {
+        "key": "ctrl+shift+t",
+        "command": "workbench.action.toggleMaximizedPanel",
+        "when": "!terminalFocus"
+      },
 ]
