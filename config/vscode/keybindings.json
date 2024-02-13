@@ -17,10 +17,16 @@
         "key": "ctrl+shift+t",
         "command": "workbench.action.closePanel",
         // "when": "terminalFocus"
-      },
-      {
+    },
+    {
         "key": "ctrl+shift+t",
         "command": "workbench.action.toggleMaximizedPanel",
         "when": "!terminalFocus"
-      },
+    },
+    // Bash "go to beginning of line" instead of VSCode Quick Open
+    // https://github.com/microsoft/vscode/issues/27342
+    {
+        "key": "ctrl+e",
+        "command": "-workbench.action.quickOpen"
+    }
 ]
