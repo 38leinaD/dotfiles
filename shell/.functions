@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
 
 war() {
+
+	if [[ $@ = *--* ]]; then
+		command=$(echo $@ | sed 's/--/\n/g' | head -n 2)
+		watchlist=$(echo $@ | sed 's/--/\n/g' | head -n 1 | sed -e 's/[[:space:]]*$//')
+	else
+		command=$@
+		watchlist=${@: -1}
+	fi
+
+	echo "Expands to: <$watchlist>" 
 	wad_do() {
 		clear;
 		the_time=$(date +%H:%M:%S)
@@ -19,9 +29,9 @@ war() {
 		fi
 		sleep 1;
 	}
-	wad_do $@
-	while inotifywait --recursive -qq  --include "${@: -1}" .; do
-		wad_do $@
+	wad_do $command
+	while inotifywait --recursive -qq  --include "$watchlist" .; do
+		wad_do $command
 	done
 }
 
