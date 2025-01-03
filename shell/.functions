@@ -2,7 +2,7 @@
 
 war() {
 
-	if [[ $@ = *--* ]]; then
+	if  [[ $@ =~ [^[:space:]]--[^[:space:]] ]]; then
 		command=$(echo $@ | sed 's/--/\n/g' | head -n 2)
 		watchlist=$(echo $@ | sed 's/--/\n/g' | head -n 1 | sed -e 's/[[:space:]]*$//')
 	else
