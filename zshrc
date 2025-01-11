@@ -105,6 +105,8 @@ export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
 
+export FZF_CTRL_T_COMMAND='find * -type d -name 'build' -prune -o -type d -name 'bin' -prune -name ".*" -prune  -o -type f'
+
 export PATH=$(realpath ~/dotfiles/bin):$PATH
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
@@ -119,3 +121,5 @@ export PATH="$HOME/.jbang/bin:$PATH"
 if [ -f ~/.zshrc.local ]; then
   source ~/.zshrc.local
 fi
+# Generated for envman. Do not edit.
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"

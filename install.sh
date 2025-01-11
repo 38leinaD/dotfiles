@@ -38,20 +38,18 @@ mkdir -p ~/bin
 ln -s ~/dotfiles/bin/open_in_idea.sh ~/bin/open_in_idea.sh
 
 #ln -s ~/dotfiles/config/vscode/settings.json ~/.config/Code/User/settings.json
-#ln -s ~/dotfiles/config/vscode/keybindings.json ~/.config/Code/User/keybindings.json
+ln -s ~/dotfiles/config/vscode/keybindings.json ~/.config/Code/User/keybindings.json
 #ln -s ~/dotfiles/config/vscode/snippets ~/.config/Code/User/snippets  
 
 #vscode
-#mkdir -p ~/.config/Code/User
-#for file in ~/dotfiles/config/vscode/*; do
-#    ln -sf "$file" ~/.config/Code/User/
-#done
+mkdir -p ~/.config/Code/User || true
+for file in ~/dotfiles/config/vscode/*; do
+    rm -f ~/.config/Code/User/$(basename $file) || true
+    ln -sf "$file" ~/.config/Code/User/
+done
 
 #sublime
-#mkdir -p /home/daniel/.config/sublime-text-3/Packages/User
-#for file in /home/daniel/dotfiles/config/sublime-text-3/*; do
-#	ln -sf "$file" /home/daniel/.config/sublime-text-3/Packages/User/
-#done
+ln -sf /home/daniel/dotfiles/config/sublime-text-3 /home/daniel/.config/sublime-text/Packages/User
 
 git clone https://github.com/robbyrussell/oh-my-zsh ~/.oh-my-zsh
 

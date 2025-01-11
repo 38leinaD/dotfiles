@@ -2,7 +2,7 @@
     "terminal.integrated.fontSize": 11,
     "terminal.integrated.fontFamily": "'Monospace'",
     "editor.wordWrap": "on",
-    "workbench.iconTheme": "material-icon-theme",
+    "workbench.iconTheme": "Monokai Pro Light (Filter Sun) Icons",
     "editor.fontSize": 11,
     "debug.console.fontSize": 11,
     "debug.console.fontFamily": "'Monospace'",
@@ -30,7 +30,7 @@
     "breadcrumbs.enabled": true,
     "editor.fontFamily": "'Monospace'",
 
-    "workbench.colorTheme": "Monokai Classic",
+    "workbench.colorTheme": "Monokai Pro Light (Filter Sun)",
     "files.exclude": {
         "**/.classpath": true,
         "**/.project": true,
@@ -44,8 +44,7 @@
     "editor.suggestSelection": "first",
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
     "editor.codeActionsOnSave": {
-        "source.fixAll": true,
-        //"source.organizeImports": true,
+        "source.fixAll": "explicit"
     },
 
     "asciidoc.preview.fontSize": 12,
