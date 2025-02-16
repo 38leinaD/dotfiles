@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+j() {
+	java $@
+}
+
 war() {
 
 	if  [[ $@ =~ [^[:space:]]--[^[:space:]] ]]; then
