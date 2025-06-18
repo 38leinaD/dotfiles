@@ -2,7 +2,7 @@
     "terminal.integrated.fontSize": 11,
     "terminal.integrated.fontFamily": "'Monospace'",
     "editor.wordWrap": "on",
-    "workbench.iconTheme": "Monokai Pro Light (Filter Sun) Icons",
+    "workbench.iconTheme": "Monokai Pro Icons",
     "editor.fontSize": 11,
     "debug.console.fontSize": 11,
     "debug.console.fontFamily": "'Monospace'",
@@ -30,7 +30,7 @@
     "breadcrumbs.enabled": true,
     "editor.fontFamily": "'Monospace'",
 
-    "workbench.colorTheme": "Monokai Pro Light (Filter Sun)",
+    "workbench.colorTheme": "Monokai Pro",
     "files.exclude": {
         "**/.classpath": true,
         "**/.project": true,

@@ -4,14 +4,10 @@
 	[
 		".git/*",
 		"target/*",
-		"Workbench/*",
-		"Components/*",
-		"Assembling/*",
-		"Runtime/*",
-		"dropin/*",
-		"lib/*"
+		"*/build/**",
+		"node_modules/**"
 	],
-	"color_scheme": "Packages/Color Scheme - Default/Monokai.sublime-color-scheme",
+	"color_scheme": "Monokai.sublime-color-scheme",
 	"default_line_ending": "unix",
 	"detect_indentation": true,
 	"enable_tab_scrolling": false,
@@ -21,9 +17,10 @@
 	"hot_exit": false,
 	"ignored_packages":
 	[
-		"Vintage"
+		"Vintage",
 	],
 	"remember_open_files": false,
+	"open_files_in_new_window": "never",
 	"remove_trailing_whitespace_on_save": false,
 	"rulers":
 	[
@@ -35,5 +32,6 @@
 	"tab_size": 4,
 	"theme": "Default.sublime-theme",
 	"translate_tabs_to_spaces": true,
-	"word_wrap": "true"
+	"word_wrap": "true",
+	"index_files": true,
 }
