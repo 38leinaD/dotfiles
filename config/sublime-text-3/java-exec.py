@@ -1,7 +1,6 @@
 import sublime
 import sublime_plugin
 import subprocess
-//import os
 
 class JavaExecCommand(sublime_plugin.TextCommand):
     def run(self, edit):

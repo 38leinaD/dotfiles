@@ -1,0 +1,6 @@
+[
+  {
+    "caption": "Pretty Print: PostgreSQL Hex JSON",
+    "command": "pretty_print_hex_json"
+  }
+]
