@@ -1,0 +1,6 @@
+[
+  {
+    "caption": "Run java file",
+    "command": "java_exec"
+  }
+]
