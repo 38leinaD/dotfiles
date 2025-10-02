@@ -4,6 +4,12 @@ j() {
 	java $@
 }
 
+async() {
+	local cmd="$1"
+ 	shift
+  	"$cmd" "$@" > /dev/null 2>&1 &
+}
+
 war() {
 
 	if  [[ $@ =~ [^[:space:]]--[^[:space:]] ]]; then
