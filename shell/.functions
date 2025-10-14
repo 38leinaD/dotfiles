@@ -11,16 +11,21 @@ async() {
 }
 
 war() {
+  # is "--" present as its own arg?
+	idx=${argv[(I)--]}
 
-	if  [[ $@ =~ [^[:space:]]--[^[:space:]] ]]; then
-		command=$(echo $@ | sed 's/--/\n/g' | head -n 2)
-		watchlist=$(echo $@ | sed 's/--/\n/g' | head -n 1 | sed -e 's/[[:space:]]*$//')
+	if (( idx )); then
+		# split argv around the "--"
+		watchlist=("${argv[1,$((idx-1))]}")     # args before --
+		command=("${argv[$((idx+1)),-1]}")      # args after  --
 	else
-		command=$@
-		watchlist=${@: -1}
+		# no "--": last arg is the watch target, the rest is the command
+		watchlist=("${argv[-1]}")
+		command=("${argv[1,-1]}")
 	fi
 
-	echo "Expands to: <$watchlist>" 
+	echo "watchlist:: <$watchlist>"
+	echo "command:: <$command>"
 	wad_do() {
 		clear;
 		the_time=$(date +%H:%M:%S)
