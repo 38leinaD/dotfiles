@@ -48,6 +48,9 @@ for file in ~/dotfiles/config/vscode/*; do
     ln -sf "$file" ~/.config/Code/User/
 done
 
+#neovim
+ln -sf /home/daniel/dotfiles/config/nvim /home/daniel/.config/nvim
+
 #sublime
 ln -sf /home/daniel/dotfiles/config/sublime-text-3 /home/daniel/.config/sublime-text/Packages/User
 
