@@ -15,9 +15,7 @@ alias dcdv='docker compose down -v'
 alias mux='tmuxinator'
 alias watchtree='clear; tree -CA; while inotifywait -q -r .; do clear; tree -CA; done;'
 alias watchls='clear; tree -CA; while inotifywait -q -r .; do clear; ls -l; done;'
-alias syntax='pygmentize -O style=rrt -f console256 -g'
 alias bsync='browser-sync . -f . --cors --no-notify --single'
-alias jeea='mvn archetype:generate -Dfilter=de.dplatz:'
 
 if which explorer.exe &> /dev/null; then
 	alias open='explorer.exe' # For WSL
@@ -26,5 +24,4 @@ else
 fi
 
 alias f='find . -name'
-
-# inotifywait -r -m * | while read file; do clear; tree; done
+alias n=nvim
