@@ -24,4 +24,4 @@ else
 fi
 
 alias f='find . -name'
-alias n=nvim
+alias v=nvim

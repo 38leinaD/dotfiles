@@ -2,7 +2,8 @@
   "extras": [
     "lazyvim.plugins.extras.editor.neo-tree",
     "lazyvim.plugins.extras.lang.clangd",
-    "lazyvim.plugins.extras.lang.java"
+    "lazyvim.plugins.extras.lang.java",
+    "lazyvim.plugins.extras.lang.typescript"
   ],
   "install_version": 8,
   "news": {
