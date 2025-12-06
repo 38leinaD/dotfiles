@@ -6,8 +6,8 @@
 vim.g.autoformat = false
 
 vim.opt.expandtab = true     -- Use spaces instead of tabs
-vim.opt.shiftwidth = 4       -- Indent by 2 spaces
-vim.opt.tabstop = 4          -- A tab counts as 2 spaces
-vim.opt.softtabstop = 4      -- Pressing <Tab> inserts 2 spaces
+vim.opt.shiftwidth = 4       -- Indent by 4 spaces
+vim.opt.tabstop = 4          -- A tab counts as 4 spaces
+vim.opt.softtabstop = 4      -- Pressing <Tab> inserts 4 spaces
 
-vim.g.lazyvim_picker = "telescope"
+--vim.g.lazyvim_picker = "telescope"
