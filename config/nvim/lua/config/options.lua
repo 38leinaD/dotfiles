@@ -10,4 +10,6 @@ vim.opt.shiftwidth = 4       -- Indent by 4 spaces
 vim.opt.tabstop = 4          -- A tab counts as 4 spaces
 vim.opt.softtabstop = 4      -- Pressing <Tab> inserts 4 spaces
 
---vim.g.lazyvim_picker = "telescope"
+-- Make searches case-sensitive
+vim.opt.ignorecase = false
+vim.opt.smartcase  = false
