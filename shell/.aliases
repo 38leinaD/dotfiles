@@ -25,3 +25,6 @@ fi
 
 alias f='find . -name'
 alias v=nvim
+
+# git
+alias gitc='git checkout $(git branch --format="%(refname:short)" | fzf)'
