@@ -52,13 +52,13 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ant docker docker-compose extract gradle mvn rsync rust tmux web-search z zsh-autosuggestions tmuxinator common-aliases kubectl)
+plugins=(git ant docker docker-compose extract gradle mvn rsync rust tmux web-search z zsh-autosuggestions tmuxinator common-aliases kubectl vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export EDITOR='subl'
+export EDITOR='nvim'
 
 # Standard and additional keybindings:
 #   ctrl + u     : clear line
@@ -73,11 +73,12 @@ export EDITOR='subl'
 #   alt  + .     : cycle through previous args
 
 # key rebinds
-bindkey -s '\C-l' 'clear && ls -lhG\n'
-bindkey -s '\C-o' 'clear\n'
-
+#bindkey -s '\C-l' 'clear && ls -lhG\n'
+#bindkey -s '\C-o' 'clear\n'
+# F1
+#bindkey -s '\eOP' 'git status --short^M'
 # ctrl-space
-bindkey '^ ' autosuggest-execute
+#bindkey '^ ' autosuggest-execute
 
 # ctrl-x : insert last command result
 zmodload -i zsh/parameter
@@ -87,39 +88,46 @@ insert-last-command-output() {
 zle -N insert-last-command-output
 bindkey '^x' insert-last-command-output
 
-# expand alias: ctrl+X A
-
-# F1
-bindkey -s '\eOP' 'git status --short^M'
-
 source ~/dotfiles/shell/.aliases
 source ~/dotfiles/shell/.functions
 source ~/dotfiles/shell/.external
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-bindkey -s '\C-z' 'ag -l -g "" | fzf | xargs subl\n'
-
-# Fix VSCode Ctrl+Shift+E shortcut (https://github.com/Microsoft/vscode/issues/48480)
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
-
-export FZF_CTRL_T_COMMAND='find * -type d -name 'build' -prune -o -type d -name 'bin' -prune -name ".*" -prune  -o -type f'
-
 export PATH=$(realpath ~/dotfiles/bin):$PATH
 
+###########################
+# vi-mode
+###########################
+VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
+VI_MODE_SET_CURSOR=true
+
+###########################
+# fzf
+###########################
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_CTRL_T_COMMAND='find * -type d -name 'build' -prune -o -type d -name 'bin' -prune -name ".*" -prune  -o -type f'
+
+###########################
+# envman
+###########################
+[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+###########################
+# Jbang
+###########################
+alias j!=jbang
+export PATH="$HOME/.jbang/bin:$PATH"
+
+###########################
+# Environment-specific .zshrc
+###########################
+if [ -f ~/.zshrc.local ]; then
+  source ~/.zshrc.local
+fi
+
+###########################
+# sdkman
+###########################
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/daniel/.sdkman"
 [[ -s "/home/daniel/.sdkman/bin/sdkman-init.sh" ]] && source "/home/daniel/.sdkman/bin/sdkman-init.sh"
 unset GRADLE_HOME
-# Add Jbang to environment
-alias j!=jbang
-export PATH="$HOME/.jbang/bin:$PATH"
-
-
-if [ -f ~/.zshrc.local ]; then
-  source ~/.zshrc.local
-fi
-# Generated for envman. Do not edit.
-[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
