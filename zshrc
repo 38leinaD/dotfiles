@@ -80,6 +80,18 @@ export EDITOR='nvim'
 # ctrl-space
 #bindkey '^ ' autosuggest-execute
 
+bindkey "^[." insert-last-word
+bindkey "^[0" digit-argument
+bindkey "^[1" digit-argument
+bindkey "^[2" digit-argument
+bindkey "^[3" digit-argument
+bindkey "^[4" digit-argument
+bindkey "^[5" digit-argument
+bindkey "^[6" digit-argument
+bindkey "^[7" digit-argument
+bindkey "^[8" digit-argument
+bindkey "^[9" digit-argument
+
 # ctrl-x : insert last command result
 zmodload -i zsh/parameter
 insert-last-command-output() {
