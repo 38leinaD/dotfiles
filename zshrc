@@ -59,6 +59,7 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 export EDITOR='nvim'
+export MANPAGER="less -R --use-color -Dd+r -Du+b" # colored man pages
 
 # Standard and additional keybindings:
 #   ctrl + u     : clear line

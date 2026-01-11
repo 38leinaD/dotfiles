@@ -12,3 +12,15 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
 -- on visual delete/paste, do not overwrite register
 vim.keymap.set("x", "p", "\"_dP")
+
+--toggle relative vs absolute line numbers
+vim.keymap.set("n", "<leader>an",
+    function()
+        if vim.wo.relativenumber then
+            vim.wo.relativenumber = false
+            vim.wo.number = true
+        else
+            vim.wo.relativenumber = true
+        end
+    end,
+    { noremap = true, silent = true })
