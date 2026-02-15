@@ -26,5 +26,9 @@ fi
 alias f='find . -name'
 alias v=nvim
 
+alias chrome='setsid google-chrome > /dev/null 2>&1 &'
+alias chrome-clean='setsid google-chrome --user-data-dir="$(mktemp -d)" --no-first-run --disable-sync > /dev/null 2>&1 &'
+alias firefox-clean='setsid firefox --no-remote --profile "$(mktemp -d)" --disable-default-browser-agent > /dev/null 2>&1 &'
+
 # git
 alias gitc='git checkout $(git branch --format="%(refname:short)" | fzf)'
