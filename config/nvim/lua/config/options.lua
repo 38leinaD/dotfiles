@@ -4,6 +4,7 @@
 --vim.opt.relativenumber = false
 
 vim.g.autoformat = false
+vim.opt.laststatus = 0
 
 vim.opt.expandtab = true     -- Use spaces instead of tabs
 vim.opt.shiftwidth = 4       -- Indent by 4 spaces
