@@ -25,6 +25,7 @@ fi
 
 alias f='find . -name'
 alias v=nvim
+alias vv='DISABLE_JDTLS=1 nvim'
 
 alias chrome='setsid google-chrome > /dev/null 2>&1 &'
 alias chrome-clean='setsid google-chrome --user-data-dir="$(mktemp -d)" --no-first-run --disable-sync > /dev/null 2>&1 &'
