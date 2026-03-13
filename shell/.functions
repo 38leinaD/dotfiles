@@ -10,6 +10,13 @@ async() {
   	"$cmd" "$@" > /dev/null 2>&1 &
 }
 
+tmuxdev() {
+    tmux new-session -d -s dev -n dev
+    tmux new-window -t dev: -n misc
+    tmux new-window -t dev: -n man
+    tmux attach-session -t dev:dev
+}
+
 war() {
   # is "--" present as its own arg?
 	idx=${argv[(I)--]}
