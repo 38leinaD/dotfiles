@@ -180,3 +180,28 @@ Please generate a concise, one-line commit message for these changes."
         esac
     done
 }
+
+
+# AI shell command generator
+ai-command() {
+  local instruction="$BUFFER"
+
+  if [[ -z "$instruction" ]]; then
+    zle redisplay
+    return
+  fi
+
+  zle -M "Generating command..."
+
+  local cmd=$(llm "Convert this instruction into a single shell command that runs in zshell. Only output the command, no explanation, no markdown code block.
+
+Instruction:
+$instruction")
+
+  BUFFER="$cmd"
+  CURSOR=${#BUFFER}
+  zle redisplay
+}
+
+zle -N ai-command
+bindkey '^G' ai-command   # Ctrl+G
