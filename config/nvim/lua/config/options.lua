@@ -13,3 +13,5 @@ vim.opt.softtabstop = 4      -- Pressing <Tab> inserts 4 spaces
 
 vim.opt.ignorecase = false -- make searches case-sensitive
 vim.opt.smartcase  = true -- but not if cases are used
+
+vim.opt.conceallevel = 0 -- do not conceal markdown syntax elements

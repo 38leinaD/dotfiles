@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# Simple LLM CLI wrapper compatible with scripts expecting `llm`
+# Supports:
+#   - Claude Code CLI (`claude`)
+#   - GitHub Copilot CLI (`gh copilot`)
+# Usage:
+#   echo "prompt" | llm
+#   llm "prompt"
+
+set -e
+
+# Read prompt either from args or stdin
+if [ -t 0 ]; then
+    PROMPT="$*"
+else
+    STDIN=$(cat)
+    PROMPT="$STDIN $*"
+fi
+
+run_claude() {
+    claude -p "$PROMPT"
+}
+
+run_copilot() {
+    gh copilot suggest -t shell "$PROMPT"
+}
+
+if command -v claude >/dev/null 2>&1; then
+    run_claude
+    exit 0
+fi
+
+if command -v gh >/dev/null 2>&1 && gh copilot --help >/dev/null 2>&1; then
+    run_copilot
+    exit 0
+fi
+
+echo "Error: No supported AI CLI found." >&2
+echo "Install one of:" >&2
+echo "  Claude Code CLI: https://docs.anthropic.com" >&2
+echo "  GitHub Copilot CLI: gh extension install github/gh-copilot" >&2
+exit 1
