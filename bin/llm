@@ -23,7 +23,8 @@ run_claude() {
 }
 
 run_copilot() {
-    gh copilot suggest -t shell "$PROMPT"
+    local disabled_mcps=$(jq -r '.mcpServers | to_entries[] | select(.value.disabled == true) | "--disable-mcp-server \(.key)"' ~/.copilot/mcp-config.json 2>/dev/null | tr '\n' ' ')
+    copilot $disabled_mcps -s -p "$PROMPT"
 }
 
 if command -v claude >/dev/null 2>&1; then
@@ -31,7 +32,7 @@ if command -v claude >/dev/null 2>&1; then
     exit 0
 fi
 
-if command -v gh >/dev/null 2>&1 && gh copilot --help >/dev/null 2>&1; then
+if command -v copilot >/dev/null 2>&1; then
     run_copilot
     exit 0
 fi
