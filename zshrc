@@ -56,6 +56,9 @@ plugins=(git ant docker docker-compose extract gradle mvn rsync rust tmux web-se
 
 source $ZSH/oh-my-zsh.sh
 
+# Add username and hostname to prompt
+export PROMPT="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ ) %{$fg[cyan]%}${USER[1]}@${HOST[1]}%{$reset_color%}:%{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)"
+
 # User configuration
 
 export EDITOR='nvim'
@@ -72,14 +75,6 @@ export MANPAGER="less -R --use-color -Dd+r -Du+b" # colored man pages
 #   ctrl + d     : delete char at current position (d for delete)
 #   ctrl + k     : delete from character to end of line
 #   alt  + .     : cycle through previous args
-
-# key rebinds
-#bindkey -s '\C-l' 'clear && ls -lhG\n'
-#bindkey -s '\C-o' 'clear\n'
-# F1
-#bindkey -s '\eOP' 'git status --short^M'
-# ctrl-space
-#bindkey '^ ' autosuggest-execute
 
 bindkey "^[." insert-last-word
 bindkey "^[0" digit-argument
