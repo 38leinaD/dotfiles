@@ -188,6 +188,9 @@ Please generate a concise, one-line commit message for these changes."
 
 # AI shell command generator
 ai-command() {
+  emulate -L zsh
+  setopt local_options no_monitor no_notify
+
   local instruction="$BUFFER"
 
   if [[ -z "$instruction" ]]; then
@@ -195,15 +198,29 @@ ai-command() {
     return
   fi
 
-  zle -M "Generating command..."
-
-  local cmd=$(llm "Convert this instruction into a single shell command that runs in zshell. Only output the command, no explanation, no markdown code block.
+  local tmpfile=$(mktemp)
+  llm "Convert this instruction into a single shell command that runs in zshell. Only output the command, no explanation, no markdown code block.
 
 Instruction:
-$instruction")
+$instruction" > "$tmpfile" 2>/dev/null &
+  local pid=$!
+
+  local spinner=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+  local i=1
+  while kill -0 $pid 2>/dev/null; do
+    zle -M "${spinner[$((i % 10 + 1))]} Generating command..."
+    zle -R
+    sleep 0.1
+    ((i++))
+  done
+  wait $pid
+
+  local cmd=$(<"$tmpfile")
+  rm -f "$tmpfile"
 
   BUFFER="$cmd"
   CURSOR=${#BUFFER}
+  zle -M ""
   zle redisplay
 }
 
