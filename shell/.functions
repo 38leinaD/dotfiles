@@ -57,52 +57,6 @@ war() {
 	done
 }
 
-warj() {
-	clear;while inotifywait -qq $1; do clear; javac $1; java ${1%.*}; sleep 1; done
-}
-
-cjclass() {
-
-	class=${1%.java}
-	file=${1}
-
-	cat << EOF > $file
-import java.io.*;
-import java.util.*;
-
-public class ${class} {
-	public static void main (String[] args) {
-		System.out.println("Hello World!");
-	}
-}
-EOF
-
-	chmod u+x $file
-	echo "File $file created."
-}
-
-cjcmd() {
-
-	class=$1
-	file=$(echo "$class" | tr '[:upper:]' '[:lower:]')
-
-	cat << EOF > $file
-#!java --source 11
-
-import java.io.*;
-import java.util.*;
-
-public class ${class} {
-	public static void main (String[] args) {
-		System.out.println("Hello World!");
-	}
-}
-EOF
-
-	chmod u+x $file
-	echo "File $file created."
-}
-
 co() {
     local disabled_mcps=$(jq -r '.mcpServers | to_entries[] | select(.value.disabled == true) | "--disable-mcp-server \(.key)"' ~/.copilot/mcp-config.json 2>/dev/null | tr '\n' ' ')
     eval "copilot --yolo $disabled_mcps $@"
