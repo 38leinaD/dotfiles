@@ -199,7 +199,7 @@ ai-command() {
   fi
 
   local tmpfile=$(mktemp)
-  llm "Convert this instruction into a single shell command that runs in zshell. Only output the command, no explanation, no markdown code block.
+  llm "You are a zshell expert. Convert this instruction into command that runs in zshell. Only output the command, no explanation, no markdown code block.
 
 Instruction:
 $instruction" > "$tmpfile" 2>/dev/null &
