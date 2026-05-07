@@ -57,7 +57,7 @@ plugins=(git ant docker docker-compose extract gradle mvn rsync rust tmux web-se
 source $ZSH/oh-my-zsh.sh
 
 # Add username and hostname to prompt
-export PROMPT="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ ) %{$fg[cyan]%}${USER[1]}@${HOST[1]}%{$reset_color%}:%{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)"
+#export PROMPT="%(?:%{$fg_bold[green]%}➜ :%{$fg_bold[red]%}➜ ) %{$fg[cyan]%}${USER[1]}@${HOST[1]}%{$reset_color%}:%{$fg[cyan]%}%c%{$reset_color%} $(git_prompt_info)"
 
 # User configuration
 
