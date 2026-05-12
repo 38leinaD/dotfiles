@@ -74,7 +74,7 @@ unalias gcm 2>/dev/null
 gcm() {
     # Function to generate commit message
     generate_commit_message() {
-        git diff --cached | llm --quiet "
+        git diff --cached | llm "
 Below is a diff of all staged changes, coming from the command:
 \`\`\`
 git diff --cached
@@ -152,8 +152,11 @@ ai-command() {
     return
   fi
 
+  local os_info=""
+  [[ -f /etc/os-release ]] && os_info=$(. /etc/os-release && echo "$PRETTY_NAME")
+
   local tmpfile=$(mktemp)
-  llm --quiet "You are a zshell expert. Convert this instruction into command that runs in zshell. Only output the command, no explanation, no markdown code block.
+  llm --quiet "You are a zshell expert on ${os_info:-Linux}. Convert this instruction into a command that runs in zshell. Only output the raw command, nothing else. No explanation, no markdown code block, no backticks, no surrounding quotes.
 
 Instruction:
 $instruction" > "$tmpfile" 2>/dev/null &
@@ -171,6 +174,14 @@ $instruction" > "$tmpfile" 2>/dev/null &
 
   local cmd=$(<"$tmpfile")
   rm -f "$tmpfile"
+
+  # Strip surrounding backticks or quotes the LLM sometimes adds
+  cmd="${cmd#\`}"
+  cmd="${cmd%\`}"
+  cmd="${cmd#\"}"
+  cmd="${cmd%\"}"
+  cmd="${cmd#\'}"
+  cmd="${cmd%\'}"
 
   BUFFER="$cmd"
   CURSOR=${#BUFFER}
