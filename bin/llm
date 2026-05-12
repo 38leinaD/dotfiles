@@ -1,44 +1,330 @@
 #!/usr/bin/env bash
 
-# Simple LLM CLI wrapper compatible with scripts expecting `llm`
-# Supports:
+# `llm` — wrapper compatible with a subset of Simon Willison's `llm` CLI
+# (https://llm.datasette.io), dispatching to one of:
 #   - Claude Code CLI (`claude`)
-#   - GitHub Copilot CLI (`gh copilot`)
-# Usage:
-#   echo "prompt" | llm
-#   llm "prompt"
+#   - GitHub Copilot CLI (`copilot`)
+#
+# Backend detection: claude if installed, otherwise copilot.
+#
+# Supported flags:
+#   -m, --model <alias>       Model alias: sonnet|opus|haiku|gpt5|auto
+#                             Errors out if the alias is unavailable on the
+#                             selected backend.
+#   -s, --system <text>       System prompt. claude: --append-system-prompt.
+#                             copilot: prepended as SYSTEM/USER section in the
+#                             user prompt (no native flag).
+#   -c, --continue            Continue the most recent conversation
+#                             (claude --continue / copilot --resume).
+#   -t, --template <name>     Load template from
+#                             ~/.config/llm-sh/templates/<name>; `$input` in
+#                             the template is replaced with args+stdin.
+#   -x, --extract             Print only the first fenced code block from the
+#                             response.
+#       --xl                  Print only the last fenced code block.
+#       --schema <file>       Constrain output to JSON matching the schema in
+#                             <file>. claude: native --json-schema. copilot:
+#                             prompt-injection plus `jq -e` validation.
+#   -d, --debug               Print backend/model/system/user prompt to stderr
+#                             before calling.
+#       --dry-run             Like --debug, but exit without calling the LLM.
+#   -h, --help                Show this help.
+#
+# Stdin semantics (matches `llm`):
+#   prompt = args + "\n\n" + stdin
+#   With -t/--template, the combined input replaces `$input` in the template.
+#
+# Usage examples:
+#   llm "explain quantum tunneling in one paragraph"
+#   git diff --cached | llm "write a one-line commit message"
+#   llm -m opus -s "be terse" "summarize: $TEXT"
+#   llm -t commit-msg < diff.txt
+#   llm --schema schema.json "extract name and age from: $TEXT"
+#   llm -x "write a bash one-liner that counts unique IPs in access.log" | sh
 
-set -e
+set -euo pipefail
 
-# Read prompt either from args or stdin
-if [ -t 0 ]; then
-    PROMPT="$*"
-else
+print_help() {
+    sed -n '3,/^set -euo/p' "$0" | sed 's/^# \{0,1\}//' | head -n -1
+}
+
+# ---------- argument parsing ----------
+
+SYSTEM=""
+MODEL_ALIAS=""
+CONTINUE=0
+EXTRACT=""        # "" | "first" | "last"
+SCHEMA_FILE=""
+TEMPLATE=""
+DEBUG=0
+DRY_RUN=0
+POSITIONAL=()
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -m|--model)      MODEL_ALIAS="${2:-}"; shift 2 ;;
+        -s|--system)     SYSTEM="${2:-}"; shift 2 ;;
+        -c|--continue)   CONTINUE=1; shift ;;
+        -t|--template)   TEMPLATE="${2:-}"; shift 2 ;;
+        -x|--extract)    EXTRACT="first"; shift ;;
+        --xl)            EXTRACT="last"; shift ;;
+        --schema)        SCHEMA_FILE="${2:-}"; shift 2 ;;
+        -d|--debug)      DEBUG=1; shift ;;
+        --dry-run)       DRY_RUN=1; shift ;;
+        -h|--help)       print_help; exit 0 ;;
+        --)              shift; while [ $# -gt 0 ]; do POSITIONAL+=("$1"); shift; done ;;
+        -*)              echo "llm: unknown flag: $1" >&2; exit 2 ;;
+        *)               POSITIONAL+=("$1"); shift ;;
+    esac
+done
+
+ARGS="${POSITIONAL[*]:-}"
+
+# ---------- read stdin ----------
+
+STDIN=""
+if [ ! -t 0 ]; then
     STDIN=$(cat)
-    PROMPT="$STDIN $*"
 fi
 
+# Combine args + stdin into the input that fills `$input` in templates,
+# or becomes the prompt directly. Args come first so the instruction is
+# read before the (often longer) piped content.
+if [ -n "$ARGS" ] && [ -n "$STDIN" ]; then
+    INPUT="$ARGS"$'\n\n'"$STDIN"
+elif [ -n "$STDIN" ]; then
+    INPUT="$STDIN"
+else
+    INPUT="$ARGS"
+fi
+
+# ---------- template ----------
+
+if [ -n "$TEMPLATE" ]; then
+    TPL_DIR="${LLM_SH_TEMPLATES:-$HOME/.config/llm-sh/templates}"
+    TPL_PATH="$TPL_DIR/$TEMPLATE"
+    if [ ! -f "$TPL_PATH" ]; then
+        echo "llm: template not found: $TPL_PATH" >&2
+        exit 3
+    fi
+    # Substitute literal `$input` with the combined input. Use awk so the
+    # replacement is treated as data — the input may contain backticks,
+    # $VAR, backslashes, etc., that would break shell-eval substitution.
+    PROMPT=$(awk -v input="$INPUT" '
+        {
+            n = index($0, "$input")
+            while (n > 0) {
+                $0 = substr($0, 1, n-1) input substr($0, n+6)
+                n = index($0, "$input")
+            }
+            print
+        }
+    ' "$TPL_PATH")
+else
+    PROMPT="$INPUT"
+fi
+
+if [ -z "$PROMPT" ]; then
+    echo "llm: empty prompt (no args, no stdin, no template)" >&2
+    exit 2
+fi
+
+# ---------- schema ----------
+
+SCHEMA_JSON=""
+if [ -n "$SCHEMA_FILE" ]; then
+    if [ ! -f "$SCHEMA_FILE" ]; then
+        echo "llm: schema file not found: $SCHEMA_FILE" >&2
+        exit 4
+    fi
+    SCHEMA_JSON=$(cat "$SCHEMA_FILE")
+fi
+
+# ---------- backend detection ----------
+
+if command -v claude >/dev/null 2>&1; then
+    BACKEND="claude"
+elif command -v copilot >/dev/null 2>&1; then
+    BACKEND="copilot"
+else
+    echo "llm: no supported AI CLI found." >&2
+    echo "  install one of:" >&2
+    echo "    Claude Code CLI:    https://docs.anthropic.com" >&2
+    echo "    GitHub Copilot CLI: https://docs.github.com/en/copilot/concepts/agents/about-copilot-cli" >&2
+    exit 1
+fi
+
+# ---------- model alias resolution ----------
+# Maps the wrapper's short aliases to the model name each backend expects.
+# Update these strings if the upstream CLIs rename their models.
+
+resolve_model() {
+    local alias="$1"
+    case "$BACKEND:$alias" in
+        claude:sonnet)   echo "sonnet" ;;
+        claude:opus)     echo "opus" ;;
+        claude:haiku)    echo "haiku" ;;
+        claude:gpt5)     echo "__NOT_AVAILABLE__" ;;
+        claude:auto)     echo "__NOT_AVAILABLE__" ;;
+        copilot:sonnet)  echo "claude-sonnet-4.5" ;;
+        copilot:gpt5)    echo "gpt-5" ;;
+        copilot:auto)    echo "auto" ;;
+        copilot:opus)    echo "__NOT_AVAILABLE__" ;;
+        copilot:haiku)   echo "__NOT_AVAILABLE__" ;;
+        *)               echo "$alias" ;;  # pass through unknown aliases
+    esac
+}
+
+RESOLVED_MODEL=""
+if [ -n "$MODEL_ALIAS" ]; then
+    RESOLVED_MODEL=$(resolve_model "$MODEL_ALIAS")
+    if [ "$RESOLVED_MODEL" = "__NOT_AVAILABLE__" ]; then
+        echo "llm: model alias '$MODEL_ALIAS' is not available via $BACKEND" >&2
+        exit 5
+    fi
+fi
+
+# ---------- assemble final system prompt ----------
+
+FINAL_SYSTEM="$SYSTEM"
+
+if [ -n "$SCHEMA_JSON" ] && [ "$BACKEND" = "copilot" ]; then
+    SCHEMA_INSTRUCTION="Respond ONLY with a single JSON document that strictly conforms to this JSON schema. Output the JSON only — no markdown code fences, no commentary.
+
+Schema:
+$SCHEMA_JSON"
+    if [ -n "$FINAL_SYSTEM" ]; then
+        FINAL_SYSTEM="$FINAL_SYSTEM"$'\n\n'"$SCHEMA_INSTRUCTION"
+    else
+        FINAL_SYSTEM="$SCHEMA_INSTRUCTION"
+    fi
+fi
+
+# For copilot, fold the system prompt into the user prompt as a SYSTEM
+# section, since copilot CLI has no system-prompt flag.
+COPILOT_PROMPT="$PROMPT"
+if [ "$BACKEND" = "copilot" ] && [ -n "$FINAL_SYSTEM" ]; then
+    COPILOT_PROMPT="SYSTEM:
+$FINAL_SYSTEM
+
+USER:
+$PROMPT"
+fi
+
+# ---------- debug / dry-run ----------
+
+if [ "$DEBUG" -eq 1 ] || [ "$DRY_RUN" -eq 1 ]; then
+    {
+        echo "--- llm-sh debug ---"
+        echo "backend:  $BACKEND"
+        echo "model:    ${RESOLVED_MODEL:-<default>}"
+        echo "continue: $([ "$CONTINUE" -eq 1 ] && echo yes || echo no)"
+        echo "extract:  ${EXTRACT:-no}"
+        echo "template: ${TEMPLATE:-<none>}"
+        echo "schema:   ${SCHEMA_FILE:-<none>}"
+        echo "--- SYSTEM ---"
+        printf '%s\n' "$FINAL_SYSTEM"
+        echo "--- USER ---"
+        if [ "$BACKEND" = "copilot" ]; then
+            printf '%s\n' "$COPILOT_PROMPT"
+        else
+            printf '%s\n' "$PROMPT"
+        fi
+        echo "---"
+    } >&2
+fi
+
+if [ "$DRY_RUN" -eq 1 ]; then
+    exit 0
+fi
+
+# ---------- run backend ----------
+
 run_claude() {
-    claude -p "$PROMPT"
+    local args=(-p)
+    [ -n "$RESOLVED_MODEL" ] && args+=(--model "$RESOLVED_MODEL")
+    [ -n "$FINAL_SYSTEM" ]   && args+=(--append-system-prompt "$FINAL_SYSTEM")
+    [ "$CONTINUE" -eq 1 ]    && args+=(--continue)
+    if [ -n "$SCHEMA_JSON" ]; then
+        args+=(--json-schema "$SCHEMA_JSON" --output-format json)
+    fi
+    args+=("$PROMPT")
+    claude "${args[@]}"
 }
 
 run_copilot() {
-    local disabled_mcps=$(jq -r '.mcpServers | to_entries[] | select(.value.disabled == true) | "--disable-mcp-server \(.key)"' ~/.copilot/mcp-config.json 2>/dev/null | tr '\n' ' ')
-    copilot $disabled_mcps -s -p "$PROMPT"
+    local disabled_mcps=()
+    if [ -f "$HOME/.copilot/mcp-config.json" ]; then
+        while IFS= read -r line; do
+            [ -n "$line" ] && read -ra parts <<< "$line" && disabled_mcps+=("${parts[@]}")
+        done < <(jq -r '.mcpServers // {} | to_entries[] | select(.value.disabled == true) | "--disable-mcp-server \(.key)"' "$HOME/.copilot/mcp-config.json" 2>/dev/null || true)
+    fi
+    local args=()
+    [ ${#disabled_mcps[@]} -gt 0 ] && args+=("${disabled_mcps[@]}")
+    args+=(-s)
+    [ -n "$RESOLVED_MODEL" ] && args+=(--model "$RESOLVED_MODEL")
+    [ "$CONTINUE" -eq 1 ]    && args+=(--resume)
+    args+=(-p "$COPILOT_PROMPT")
+    copilot "${args[@]}"
 }
 
-if command -v claude >/dev/null 2>&1; then
-    run_claude
+# Capture the response only when we need to post-process it (extract or
+# schema unwrap/validate). Otherwise stream straight to stdout.
+
+NEEDS_CAPTURE=0
+[ -n "$EXTRACT" ]      && NEEDS_CAPTURE=1
+[ -n "$SCHEMA_JSON" ]  && NEEDS_CAPTURE=1
+
+if [ "$NEEDS_CAPTURE" -eq 0 ]; then
+    if [ "$BACKEND" = "claude" ]; then
+        run_claude
+    else
+        run_copilot
+    fi
     exit 0
 fi
 
-if command -v copilot >/dev/null 2>&1; then
-    run_copilot
-    exit 0
+if [ "$BACKEND" = "claude" ]; then
+    RESPONSE=$(run_claude)
+else
+    RESPONSE=$(run_copilot)
 fi
 
-echo "Error: No supported AI CLI found." >&2
-echo "Install one of:" >&2
-echo "  Claude Code CLI: https://docs.anthropic.com" >&2
-echo "  GitHub Copilot CLI: gh extension install github/gh-copilot" >&2
-exit 1
+# claude's --output-format=json wraps the answer in a JSON envelope; unwrap.
+if [ -n "$SCHEMA_JSON" ] && [ "$BACKEND" = "claude" ]; then
+    RESPONSE=$(printf '%s' "$RESPONSE" | jq -r '.result // .')
+fi
+
+# copilot schema validation (best-effort, no retry).
+if [ -n "$SCHEMA_JSON" ] && [ "$BACKEND" = "copilot" ]; then
+    if ! printf '%s' "$RESPONSE" | jq -e . >/dev/null 2>&1; then
+        echo "llm: copilot response is not valid JSON" >&2
+        printf '%s\n' "$RESPONSE" >&2
+        exit 6
+    fi
+fi
+
+# Extract first/last fenced code block.
+if [ -n "$EXTRACT" ]; then
+    RESPONSE=$(printf '%s' "$RESPONSE" | awk -v which="$EXTRACT" '
+        BEGIN { in_block = 0; buf = ""; saved = "" }
+        /^```/ {
+            if (in_block) {
+                in_block = 0
+                if (which == "first") { printf "%s", buf; exit }
+                saved = buf
+                buf = ""
+            } else {
+                in_block = 1
+                buf = ""
+            }
+            next
+        }
+        in_block { buf = buf $0 ORS }
+        END {
+            if (which == "last") { printf "%s", saved }
+        }
+    ')
+fi
+
+printf '%s\n' "$RESPONSE"
