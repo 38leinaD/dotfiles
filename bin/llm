@@ -28,6 +28,10 @@
 #   -d, --debug               Print backend/model/system/user prompt to stderr
 #                             before calling.
 #       --dry-run             Like --debug, but exit without calling the LLM.
+#   -q, --quiet               Suppress the stderr progress spinner. Useful
+#                             when a caller (e.g. gcm) shows its own progress
+#                             indicator. Auto-suppressed when stderr is not a
+#                             TTY.
 #   -h, --help                Show this help.
 #
 # Stdin semantics (matches `llm`):
@@ -58,6 +62,7 @@ SCHEMA_FILE=""
 TEMPLATE=""
 DEBUG=0
 DRY_RUN=0
+QUIET=0
 POSITIONAL=()
 
 while [ $# -gt 0 ]; do
@@ -71,6 +76,7 @@ while [ $# -gt 0 ]; do
         --schema)        SCHEMA_FILE="${2:-}"; shift 2 ;;
         -d|--debug)      DEBUG=1; shift ;;
         --dry-run)       DRY_RUN=1; shift ;;
+        -q|--quiet)      QUIET=1; shift ;;
         -h|--help)       print_help; exit 0 ;;
         --)              shift; while [ $# -gt 0 ]; do POSITIONAL+=("$1"); shift; done ;;
         -*)              echo "llm: unknown flag: $1" >&2; exit 2 ;;
@@ -268,12 +274,48 @@ run_copilot() {
     copilot "${args[@]}"
 }
 
-# Capture the response only when we need to post-process it (extract or
-# schema unwrap/validate). Otherwise stream straight to stdout.
+# ---------- progress spinner ----------
+# Same braille rotation as the ai-command helper in shell/.functions, on
+# stderr. Skipped when --quiet is set or stderr is not a TTY (so capturing
+# stderr to a file or piping to a logger doesn't pollute output).
+
+SPINNER_PID=""
+
+start_spinner() {
+    [ "$QUIET" -eq 1 ] && return
+    [ -t 2 ] || return
+    (
+        local frames=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+        local i=0
+        while :; do
+            printf '\r\033[2K%s thinking…' "${frames[i % 10]}" >&2
+            sleep 0.1
+            i=$((i + 1))
+        done
+    ) &
+    SPINNER_PID=$!
+    disown "$SPINNER_PID" 2>/dev/null || true
+}
+
+stop_spinner() {
+    if [ -n "$SPINNER_PID" ]; then
+        kill "$SPINNER_PID" 2>/dev/null || true
+        wait "$SPINNER_PID" 2>/dev/null || true
+        printf '\r\033[2K' >&2
+        SPINNER_PID=""
+    fi
+}
+
+trap stop_spinner EXIT INT TERM
+
+# When the spinner is on we always capture output (otherwise the spinner
+# would interleave with streamed tokens). Post-processing (extract / schema)
+# already implies capture.
 
 NEEDS_CAPTURE=0
-[ -n "$EXTRACT" ]      && NEEDS_CAPTURE=1
-[ -n "$SCHEMA_JSON" ]  && NEEDS_CAPTURE=1
+[ -n "$EXTRACT" ]                                          && NEEDS_CAPTURE=1
+[ -n "$SCHEMA_JSON" ]                                      && NEEDS_CAPTURE=1
+[ "$QUIET" -eq 0 ] && [ -t 2 ]                             && NEEDS_CAPTURE=1
 
 if [ "$NEEDS_CAPTURE" -eq 0 ]; then
     if [ "$BACKEND" = "claude" ]; then
@@ -284,11 +326,13 @@ if [ "$NEEDS_CAPTURE" -eq 0 ]; then
     exit 0
 fi
 
+start_spinner
 if [ "$BACKEND" = "claude" ]; then
     RESPONSE=$(run_claude)
 else
     RESPONSE=$(run_copilot)
 fi
+stop_spinner
 
 # claude's --output-format=json wraps the answer in a JSON envelope; unwrap.
 if [ -n "$SCHEMA_JSON" ] && [ "$BACKEND" = "claude" ]; then
