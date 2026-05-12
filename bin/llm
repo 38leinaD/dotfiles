@@ -38,13 +38,64 @@
 #   prompt = args + "\n\n" + stdin
 #   With -t/--template, the combined input replaces `$input` in the template.
 #
-# Usage examples:
-#   llm "explain quantum tunneling in one paragraph"
-#   git diff --cached | llm "write a one-line commit message"
-#   llm -m opus -s "be terse" "summarize: $TEXT"
-#   llm -t commit-msg < diff.txt
-#   llm --schema schema.json "extract name and age from: $TEXT"
-#   llm -x "write a bash one-liner that counts unique IPs in access.log" | sh
+# Environment:
+#   LLM_SH_TEMPLATES   Override the template directory.
+#                      Default: ~/.config/llm-sh/templates
+#
+# Usage examples
+#
+#   One-shot prompt:
+#     llm "explain quantum tunneling in one paragraph"
+#
+#   Pipe content with an instruction (args first, stdin appended):
+#     cat error.log | llm "what is the root cause here?"
+#     git diff --cached | llm "write a one-line commit message"
+#
+#   Pick a model with an alias:
+#     llm -m opus "design a database schema for a todo app"
+#     llm -m gpt5 "review this Python: $(< foo.py)"
+#     llm -m haiku "TL;DR of:" < article.md
+#
+#   System prompt:
+#     llm -s "answer in one sentence" "what is RAII?"
+#     cat code.py | llm -s "you are a strict code reviewer" "review this"
+#
+#   Continue the previous conversation:
+#     llm "summarise the SOLID principles"
+#     llm -c "now give me one Python example for each"
+#
+#   Templates (place files in ~/.config/llm-sh/templates/<name>):
+#     # ~/.config/llm-sh/templates/commit-msg contains:
+#     #   Write a concise, one-line git commit message for this diff:
+#     #
+#     #   $input
+#     git diff --cached | llm -t commit-msg
+#
+#   Extract first/last fenced code block (for piping into a shell or file):
+#     llm -x "bash one-liner: count unique IPs in access.log" | sh
+#     llm -x "convert this YAML to JSON" < config.yaml > config.json
+#     llm --xl "write code with explanation, then final answer last" > out
+#
+#   Structured JSON output via schema:
+#     echo '{"type":"object","properties":{"name":{"type":"string"},
+#            "age":{"type":"integer"}},"required":["name","age"]}' > person.json
+#     llm --schema person.json "Jane is 32 years old"
+#
+#   Debug what is sent to the backend:
+#     llm -d "test prompt"          # print + still call
+#     llm --dry-run "test prompt"   # print + exit, no tokens spent
+#
+#   Suppress the spinner when a caller renders its own progress:
+#     llm --quiet "..."             # silent on stderr
+#
+# Exit codes:
+#   0  success
+#   1  no backend CLI (claude, copilot) installed
+#   2  unknown flag, or empty prompt (no args, no stdin, no template)
+#   3  template file not found
+#   4  schema file not found
+#   5  model alias not available on the active backend
+#   6  --schema set but copilot response is not valid JSON
 
 set -euo pipefail
 
