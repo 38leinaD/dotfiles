@@ -74,7 +74,7 @@ unalias gcm 2>/dev/null
 gcm() {
     # Function to generate commit message
     generate_commit_message() {
-        git diff --cached | llm "
+        git diff --cached | llm --quiet "
 Below is a diff of all staged changes, coming from the command:
 \`\`\`
 git diff --cached
@@ -153,7 +153,7 @@ ai-command() {
   fi
 
   local tmpfile=$(mktemp)
-  llm "You are a zshell expert. Convert this instruction into command that runs in zshell. Only output the command, no explanation, no markdown code block.
+  llm --quiet "You are a zshell expert. Convert this instruction into command that runs in zshell. Only output the command, no explanation, no markdown code block.
 
 Instruction:
 $instruction" > "$tmpfile" 2>/dev/null &
