@@ -155,9 +155,22 @@ ai-command() {
   local os_info=""
   [[ -f /etc/os-release ]] && os_info=$(. /etc/os-release && echo "$PRETTY_NAME")
 
+  local tmux_context=""
+  if [[ -n "$TMUX" ]]; then
+    local pane_content=$(tmux capture-pane -p -S -50 2>/dev/null)
+    tmux_context="
+You are running inside a tmux session. You can use tmux commands to inspect other panes/windows if needed.
+Current tmux session: $(tmux display-message -p '#S' 2>/dev/null)
+Current window: $(tmux display-message -p '#W' 2>/dev/null)
+Recent terminal output from the active pane:
+\`\`\`
+${pane_content}
+\`\`\`"
+  fi
+
   local tmpfile=$(mktemp)
   llm --quiet "You are a zshell expert on ${os_info:-Linux}. Convert this instruction into a command that runs in zshell. Only output the raw command, nothing else. No explanation, no markdown code block, no backticks, no surrounding quotes.
-
+${tmux_context}
 Instruction:
 $instruction" > "$tmpfile" 2>/dev/null &
   local pid=$!
