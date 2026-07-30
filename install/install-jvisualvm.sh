@@ -17,7 +17,7 @@ fi
 
 pushd ~/tools/
 unzip $DOWNLOAD_DIR/$FILENAME
-ln -s ~/tools/${FILENAME%%.*}/bin/visualvm ~/bin/visualvm
+ln -s ~/tools/${FILENAME%%.*}/bin/visualvm ~/.local/bin/visualvm
 popd
 
 popd
