@@ -26,7 +26,7 @@
 
 set -euo pipefail
 
-WHISPER_MODEL="${WHISPER_MODEL:-$HOME/dev/whisper.cpp/models/ggml-small.bin}"
+WHISPER_MODEL="${WHISPER_MODEL:-$HOME/dev/whisper.cpp/models/ggml-medium.en.bin}"
 WHISPER_BIN_DIR="${WHISPER_BIN_DIR:-$HOME/dev/whisper.cpp/build/bin}"
 CRV_SPEAKER_MODELS_DIR="${CRV_SPEAKER_MODELS_DIR:-$HOME/.cache/claude-real-video/speaker-models}"
 
@@ -50,12 +50,12 @@ cmd_install() {
   # GitHub release assets (plain downloads).
 
   local cache_dir="$CRV_SPEAKER_MODELS_DIR"
-  local seg_url="https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2"
-  local seg_dir="sherpa-onnx-pyannote-segmentation-3-0"
+  local seg_url="https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-segmentation-models/sherpa-onnx-reverb-diarization-v2.tar.bz2"
+  local seg_dir="sherpa-onnx-reverb-diarization-v2"
 
   # note: "recongition" is the actual (typo'd) release-tag name in the sherpa-onnx repo
-  local emb_url="https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx"
-  local emb_file="3dspeaker_speech_eres2net_base_sv_zh-cn_3dspeaker_16k.onnx"
+  local emb_url="https://github.com/k2-fsa/sherpa-onnx/releases/download/speaker-recongition-models/3dspeaker_speech_eres2net_sv_en_voxceleb_16k.onnx"
+  local emb_file="3dspeaker_speech_eres2net_sv_en_voxceleb_16k.onnx"
 
   mkdir -p "$cache_dir"
   cd "$cache_dir"
