@@ -21,3 +21,20 @@ IDEA_DIR=$(ls $TMP)
 sudo mv $TMP/$IDEA_DIR /opt/
 sudo rm -f /usr/local/bin/idea
 sudo ln -s /opt/$IDEA_DIR/bin/idea.sh /usr/local/bin/idea
+
+mkdir -p ~/.local/share/applications
+cat > ~/.local/share/applications/intellij-idea.desktop << EOF
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=IntelliJ IDEA Ultimate
+Icon=/opt/$IDEA_DIR/bin/idea.svg
+Exec="/opt/$IDEA_DIR/bin/idea" %f
+Comment=Capable and Ergonomic IDE for JVM
+Categories=Development;IDE;
+Terminal=false
+StartupWMClass=jetbrains-idea
+StartupNotify=true
+EOF
+
+update-desktop-database ~/.local/share/applications 2>/dev/null || true
