@@ -32,4 +32,6 @@ alias chrome-clean='setsid google-chrome --user-data-dir="$(mktemp -d)" --no-fir
 alias firefox-clean='setsid firefox --no-remote --profile "$(mktemp -d)" --disable-default-browser-agent > /dev/null 2>&1 &'
 
 # git
-alias gitc='git checkout $(git branch --format="%(refname:short)" | fzf)'
+alias gitc='git checkout "$(git for-each-ref --format="%(refname:short)" refs/heads refs/remotes | grep -v "HEAD$" | sed "s|^origin/||" | sort -u | fzf)"'
+
+alias jsontidy="xclip -selection clipboard -o | (jq '.' || xclip -selection clipboard -o) | xclip -selection clipboard"
