@@ -1,9 +1,19 @@
 #!/bin/bash
 set -e
 
+# Usage: install-intellij-idea.sh [--no-skill]
+# By default the ij-debugger Copilot skill bundled with IDEA is (over)written too.
+INSTALL_SKILL=1
+for arg in "$@"; do
+	case "$arg" in
+		--no-skill) INSTALL_SKILL=0 ;;
+		*) echo "Unknown option: $arg" >&2; exit 1 ;;
+	esac
+done
+
 sudo echo
 
-IDEA_DOWNLOAD_LINK=$(curl https://data.services.jetbrains.com/products\?code\=IIU\&release.type\=eap%2Crc%2Crelease\&fields\=distributions%2Clink%2Cname%2Creleases | jq -r '.[0].releases[0].downloads.linux.link')
+IDEA_DOWNLOAD_LINK=$(curl https://data.services.jetbrains.com/products\?code\=IIU\&release.type\=release\&fields\=distributions%2Clink%2Cname%2Creleases | jq -r '.[0].releases[0].downloads.linux.link')
 
 IDEA_TAR=$(echo $IDEA_DOWNLOAD_LINK | rev | cut -d / -f1 | rev)
 
@@ -38,3 +48,19 @@ StartupNotify=true
 EOF
 
 update-desktop-database ~/.local/share/applications 2>/dev/null || true
+
+if [ "$INSTALL_SKILL" = 1 ]; then
+	# Extract the ij-debugger skill (debuggerMcp plugin) and install it as a Copilot skill
+	JAR="/opt/$IDEA_DIR/plugins/debuggerMcp/lib/debuggerMcp.jar"
+	SKILL_DEST="$HOME/.copilot/skills/ij-debugger"
+	if [ -f "$JAR" ]; then
+		SKILL_TMP=$(mktemp -d)
+		unzip -oq "$JAR" ij-debugger-skill.md -d "$SKILL_TMP"
+		mkdir -p "$SKILL_DEST"
+		cp "$SKILL_TMP/ij-debugger-skill.md" "$SKILL_DEST/SKILL.md"
+		rm -rf "$SKILL_TMP"
+		echo "Installed $SKILL_DEST/SKILL.md (from $JAR)"
+	else
+		echo "debuggerMcp.jar not found at: $JAR; skipping skill" >&2
+	fi
+fi

@@ -155,6 +155,13 @@ ai-command() {
   local os_info=""
   [[ -f /etc/os-release ]] && os_info=$(. /etc/os-release && echo "$PRETTY_NAME")
 
+  local last_cmd_context=""
+  local last_cmd="${history[$((HISTCMD-1))]}"
+  if [[ -n "$last_cmd" ]]; then
+    last_cmd_context="
+Last command executed in the shell: $last_cmd"
+  fi
+
   local tmux_context=""
   if [[ -n "$TMUX" ]]; then
     local pane_content=$(tmux capture-pane -p -S -50 2>/dev/null)
@@ -170,6 +177,7 @@ ${pane_content}
 
   local tmpfile=$(mktemp)
   llm --quiet "You are a zshell expert on ${os_info:-Linux}. Convert this instruction into a command that runs in zshell. Only output the raw command, nothing else. No explanation, no markdown code block, no backticks, no surrounding quotes.
+${last_cmd_context}
 ${tmux_context}
 Instruction:
 $instruction" > "$tmpfile" 2>/dev/null &
