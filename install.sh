@@ -36,6 +36,10 @@ fi
 ln -s ~/dotfiles/gitconfig ~/.gitconfig
 
 
+#tmuxx (tmux layout launcher, layouts live in ~/.config/tmux/layouts)
+mkdir -p ~/.local/bin
+ln -sf ~/dotfiles/bin/tmuxx ~/.local/bin/tmuxx
+
 #ln -s ~/dotfiles/config/vscode/settings.json ~/.config/Code/User/settings.json
 #ln -s ~/dotfiles/config/vscode/keybindings.json ~/.config/Code/User/keybindings.json
 #ln -s ~/dotfiles/config/vscode/snippets ~/.config/Code/User/snippets  

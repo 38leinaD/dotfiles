@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# tmuxx [layout] [session] - start (or attach to) a tmux session from ~/.config/tmux/layouts/<layout>.conf
+# layout defaults to the basename of the current directory; session defaults to the directory name too.
+# Layouts can use $TMUXX_ROOT (current dir) and $TMUXX_SESSION.
+set -euo pipefail
+
+dir="${XDG_CONFIG_HOME:-$HOME/.config}/tmux/layouts"
+
+if [[ "${1:-}" == "-l" ]]; then
+  ls "$dir" 2>/dev/null | sed 's/\.conf$//'
+  exit 0
+fi
+
+root="$PWD"
+layout="${1:-$(basename "$root")}"
+session="${2:-$(basename "$root")}"
+file="$dir/$layout.conf"
+
+if [[ ! -f "$file" ]]; then
+  echo "tmuxx: no layout '$layout' in $dir" >&2
+  echo "available: $(ls "$dir" 2>/dev/null | sed 's/\.conf$//' | tr '\n' ' ')" >&2
+  exit 1
+fi
+
+if ! tmux has-session -t "=$session" 2>/dev/null; then
+  tmux start-server \; \
+    set-environment -g TMUXX_ROOT "$root" \; \
+    set-environment -g TMUXX_SESSION "$session" \; \
+    source-file "$file"
+fi
+
+if [[ -n "${TMUX:-}" ]]; then
+  tmux switch-client -t "=$session"
+else
+  tmux attach -t "=$session"
+fi
