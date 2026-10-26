@@ -212,3 +212,12 @@ $instruction" > "$tmpfile" 2>/dev/null &
 
 zle -N ai-command
 bindkey '^G' ai-command   # Ctrl+G
+
+# links <file>...: symlink files into ~/links (absolute target, spaces in name -> _)
+links() {
+  mkdir -p ~/links
+  local f
+  for f in "$@"; do
+    ln -s "$(realpath -s "$f")" ~/links/"$(basename "$f" | tr ' ' '_')"
+  done
+}
