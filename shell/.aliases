@@ -15,6 +15,7 @@ alias dcdv='docker compose down -v'
 alias mux='tmuxinator'
 alias watchtree='clear; tree -CA; while inotifywait -q -r .; do clear; tree -CA; done;'
 alias watchls='clear; tree -CA; while inotifywait -q -r .; do clear; ls -l; done;'
+alias pumlwatch='ls *.puml | entr -r sh -c '\''java -Djava.awt.headless=true --add-exports java.desktop/com.sun.imageio.plugins.png=ALL-UNNAMED -jar $(gradle-resolve.sh getClasspath "net.sourceforge.plantuml:plantuml:8059") -tpng *.puml'\'''
 alias bsync='browser-sync . -f . --cors --no-notify --single'
 
 if which explorer.exe &> /dev/null; then

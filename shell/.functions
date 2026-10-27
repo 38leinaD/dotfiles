@@ -57,6 +57,10 @@ war() {
 	done
 }
 
+# Workaround for github/copilot-cli#5197: voice server segfaults in the Foundry
+# telemetry uploader; a CI marker makes it skip the upload.
+copilot() { JENKINS_URL=disabled-1ds command copilot "$@"; }
+
 co() {
     local disabled_mcps=$(jq -r '.mcpServers | to_entries[] | select(.value.disabled == true) | "--disable-mcp-server \(.key)"' ~/.copilot/mcp-config.json 2>/dev/null | tr '\n' ' ')
     eval "copilot --yolo $disabled_mcps $@"
@@ -197,12 +201,14 @@ $instruction" > "$tmpfile" 2>/dev/null &
   rm -f "$tmpfile"
 
   # Strip surrounding backticks or quotes the LLM sometimes adds
-  cmd="${cmd#\`}"
-  cmd="${cmd%\`}"
-  cmd="${cmd#\"}"
-  cmd="${cmd%\"}"
-  cmd="${cmd#\'}"
-  cmd="${cmd%\'}"
+  # (only when the whole command is wrapped in a matching pair)
+  local q
+  for q in '`' '"' "'"; do
+    if [[ ${#cmd} -ge 2 && $cmd == ${q}*${q} && ${cmd:1:-1} != *${q}* ]]; then
+      cmd="${cmd:1:-1}"
+      break
+    fi
+  done
 
   BUFFER="$cmd"
   CURSOR=${#BUFFER}
