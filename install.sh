@@ -52,10 +52,10 @@ ln -sf ~/dotfiles/bin/tmuxx ~/.local/bin/tmuxx
 #done
 
 #neovim
-ln -sf /home/daniel/dotfiles/config/nvim /home/daniel/.config/nvim
+ln -sf /home/$USER/dotfiles/config/nvim /home/$USER/.config/nvim
 
 #sublime
-ln -sf /home/daniel/dotfiles/config/sublime-text-3 /home/daniel/.config/sublime-text/Packages/User
+#ln -sf /home/$USER/dotfiles/config/sublime-text-3 /home/$USER/.config/sublime-text/Packages/User
 
 git clone https://github.com/robbyrussell/oh-my-zsh ~/.oh-my-zsh
 
